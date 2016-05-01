@@ -25,9 +25,24 @@ function createMap() {
     .attr("xlink:href", "../data/sf-map.svg");
 }
 
+function loadCrimeData() {
+  d3.json("../data/scpd_incidents.json", function(dataObject) {
+    data = dataObject["data"];
+    // var circle = svg.append("circle").attr({
+    //     cx: originX,
+    //     cy: originY,
+    //     r: circleRadius,
+    //     fill: "white",
+    //     stroke: "black"
+    // });
+    console.log("data loaded");
+  });
+}
+
 
 $(document).ready(function() {
   createMap();
+  loadCrimeData();
 });
 
 
@@ -35,9 +50,9 @@ $(document).ready(function() {
 
 
 // --- Playing with circles ---
-// var originX = 200;
-// var originY = 200;
-// var circleRadius = 100;
+var originX = 200;
+var originY = 200;
+var circleRadius = 10;
 // var circle = svg.append("circle").attr({
 //     cx: originX,
 //     cy: originY,
