@@ -1,0 +1,22 @@
+.vis_container {
+	width: 60%;
+	float: left;
+}
+
+.vis_controls_container {
+	width: 35%;
+	float: right;
+}
+
+.ui-slider {
+	width: 80%;
+	margin: 10px 0px 20px 0px;
+}
+
+.ui-corner-all {
+	border-radius: 15px !important;
+}
+
+.ui-state-default:focus {
+	outline: none;
+}
