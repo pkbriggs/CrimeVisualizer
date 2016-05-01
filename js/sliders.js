@@ -5,7 +5,7 @@ $(function() {
     range: false,
     min: 0,
     max: 100,
-    value: 5.0,
+    value: 50,
     slide: function(event, ui) {
       var new_value = ui.value / 10;
       $(this).prev().text(new_value);
