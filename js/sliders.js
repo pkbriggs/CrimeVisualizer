@@ -1,11 +1,19 @@
+var scaling_factor = 10;
+
 $(function() {
   $( ".slider" ).slider({
     range: false,
     min: 0,
-    max: 10,
-    value: 5,
+    max: 100,
+    value: 5.0,
     slide: function(event, ui) {
-      $(this).prev().text(ui.value);
+      var new_value = ui.value / 10;
+      $(this).prev().text(new_value);
+      if ($(this).parent().attr("class") == "slider_a")
+        window.a_radius = new_value * scaling_factor;
+      else
+        window.b_radius = new_value * scaling_factor;
+      $(".vis_container").trigger("updated_markers");
     }
   });
     $(this).prev().text($(".slider").slider("value"));

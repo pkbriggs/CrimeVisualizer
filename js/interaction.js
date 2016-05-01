@@ -49,17 +49,6 @@ function loadCrimeData(callback) {
   d3.json("../data/scpd_incidents.json", function(dataObject) {
     data = dataObject["data"];
     callback(data);
-    types = {}
-    $.each(data, function(index, entry) {
-      // console.log(entry["Category"]);
-      var crime_type = entry["Category"];
-      if (crime_type in types) {
-        types[crime_type] += 1;
-      } else {
-        types[crime_type] = 1;
-      }
-    });
-    console.log(types);
   });
 }
 
