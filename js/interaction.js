@@ -3,9 +3,16 @@
 var width = 750,
   height = width;
 var circleRadius = 3;
-var AB_CIRCLE_RADIUS = 100;
-var INITIAL_A_POSITION = [-122.429494, 37.798033];
-var INITIAL_B_POSITION = [-122.413954, 37.780000];
+// var AB_CIRCLE_RADIUS = 100;
+// var INITIAL_A_POSITION = [-122.429494, 37.798033];
+// var INITIAL_B_POSITION = [-122.413954, 37.780000];
+
+
+// globals
+var a_position = [-122.429494, 37.798033]; // arbitrary initial position
+var b_position = [-122.413954, 37.780000]; // arbitrary initial position
+var a_radius = 60;
+var b_radius = 100;
 
 
 function getMapProjection() {
@@ -46,11 +53,11 @@ function loadCrimeData(callback) {
 }
 
 function createAAndBMarkers(svg, projection) {
-  var a_coords = projection(INITIAL_A_POSITION);
-  var b_coords = projection(INITIAL_B_POSITION);
+  var a_coords = projection(a_position);
+  var b_coords = projection(b_position);
 
   var circle_a_props = {
-    r: AB_CIRCLE_RADIUS,
+    r: a_radius,
     cx: a_coords[0],
     cy: a_coords[1],
     fill: "red",
@@ -59,7 +66,7 @@ function createAAndBMarkers(svg, projection) {
   createCircle(svg, circle_a_props);
 
   var circle_b_props = {
-    r: AB_CIRCLE_RADIUS,
+    r: b_radius,
     cx: b_coords[0],
     cy: b_coords[1],
     fill: "green",
@@ -81,24 +88,40 @@ function createAAndBMarkers(svg, projection) {
 }
 
 function addAllCrimeDataToMap(data, svg, projection) {
-  circle_props = {
-    r: circleRadius,
-    fill: "white",
-    "stroke": "black"
-  };
+  // var crime_circles = svg.selectAll("circle")
+  //   .data(data)
+  //   .enter()
+  //   .append("circle")
+  //   .attr("r", circleRadius)
+  //   .attr("fill", "white")
+  //   .attr("stroke", "black");
 
-  $.each(data, function(index, entry) {
-    var coords = projection(entry["Location"]);
-    circle_props["cx"] = coords[0];
-    circle_props["cy"] = coords[1];
-    createCircle(svg, circle_props);
-  });
+  // crime_circles.attr("cx", function(d) {
+  //     projection(d["Location"])[0]
+  //   }).attr("cy", function(d) {
+  //     projection(d["Location"])[1]
+  //   });
+
+
+  // circle_props = {
+  //   r: circleRadius,
+  //   fill: "white",
+  //   "stroke": "black"
+  // };
+
+  // $.each(data, function(index, entry) {
+  //   var coords = projection(entry["Location"]);
+  //   circle_props["cx"] = coords[0];
+  //   circle_props["cy"] = coords[1];
+  //   createCircle(svg, circle_props);
+  // });
 }
 
-function crimeWithinMarkers(crime_coords, a_coords, b_coords) {
-  var a_radius = AB_CIRCLE_RADIUS;
-  var b_radius = AB_CIRCLE_RADIUS;
+function updateMarkerARadius(radius) {
 
+}
+
+function crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius) {
   // see if it is within marker A's radius
   var a_x_difference = Math.pow(crime_coords[0] - a_coords[0], 2); // (x2 - x1)^2
   var a_y_difference = Math.pow(crime_coords[1] - a_coords[1], 2); // (x2 - x1)^2
@@ -120,18 +143,41 @@ function crimeWithinMarkers(crime_coords, a_coords, b_coords) {
 
 
 function addCrimeDataWithinMarkers(data, svg, projection) {
+  // var a_coords = projection(INITIAL_A_POSITION);
+  // var b_coords = projection(INITIAL_B_POSITION);
+
+  // var filtered_data = data.filter(function(entry) {
+  //   var crime_coords = projection(entry["Location"]);
+  //   return crimeWithinMarkers(crime_coords, a_coords, b_coords);
+  // })
+
+  // var crime_circles = svg.selectAll("circle")
+  //   .data(data)
+  //   .enter()
+  //   .append("circle")
+  //   .attr("r", circleRadius)
+  //   .attr("fill", "white")
+  //   .attr("stroke", "black")
+  //   .attr("opacity", 0.8);
+
+  // crime_circles.attr("cx", function(d) {
+  //     projection(d["Location"])[0]
+  //   }).attr("cy", function(d) {
+  //     projection(d["Location"])[1]
+  //   });
+
   circle_props = {
     r: circleRadius,
     fill: "white",
     stroke: "black",
     opacity: 0.8
   };
-  var a_coords = projection(INITIAL_A_POSITION);
-  var b_coords = projection(INITIAL_B_POSITION);
+  var a_coords = projection(a_position);
+  var b_coords = projection(b_position);
 
   $.each(data, function(index, entry) {
     var crime_coords = projection(entry["Location"]);
-    if (crimeWithinMarkers(crime_coords, a_coords, b_coords)) {
+    if (crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius)) {
       circle_props["cx"] = crime_coords[0];
       circle_props["cy"] = crime_coords[1];
       createCircle(svg, circle_props);
