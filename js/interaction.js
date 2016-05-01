@@ -49,6 +49,17 @@ function loadCrimeData(callback) {
   d3.json("../data/scpd_incidents.json", function(dataObject) {
     data = dataObject["data"];
     callback(data);
+    types = {}
+    $.each(data, function(index, entry) {
+      // console.log(entry["Category"]);
+      var crime_type = entry["Category"];
+      if (crime_type in types) {
+        types[crime_type] += 1;
+      } else {
+        types[crime_type] = 1;
+      }
+    });
+    console.log(types);
   });
 }
 
@@ -143,46 +154,46 @@ function crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius
 
 
 function addCrimeDataWithinMarkers(data, svg, projection) {
-  // var a_coords = projection(INITIAL_A_POSITION);
-  // var b_coords = projection(INITIAL_B_POSITION);
-
-  // var filtered_data = data.filter(function(entry) {
-  //   var crime_coords = projection(entry["Location"]);
-  //   return crimeWithinMarkers(crime_coords, a_coords, b_coords);
-  // })
-
-  // var crime_circles = svg.selectAll("circle")
-  //   .data(data)
-  //   .enter()
-  //   .append("circle")
-  //   .attr("r", circleRadius)
-  //   .attr("fill", "white")
-  //   .attr("stroke", "black")
-  //   .attr("opacity", 0.8);
-
-  // crime_circles.attr("cx", function(d) {
-  //     projection(d["Location"])[0]
-  //   }).attr("cy", function(d) {
-  //     projection(d["Location"])[1]
-  //   });
-
-  circle_props = {
-    r: circleRadius,
-    fill: "white",
-    stroke: "black",
-    opacity: 0.8
-  };
   var a_coords = projection(a_position);
   var b_coords = projection(b_position);
 
-  $.each(data, function(index, entry) {
+  var filtered_data = data.filter(function(entry) {
     var crime_coords = projection(entry["Location"]);
-    if (crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius)) {
-      circle_props["cx"] = crime_coords[0];
-      circle_props["cy"] = crime_coords[1];
-      createCircle(svg, circle_props);
-    }
+    return crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius);
   });
+
+  var crime_circles = svg.selectAll("circle")
+    .data(filtered_data)
+    .enter()
+    .append("circle")
+    .attr("r", circleRadius)
+    .attr("fill", "white")
+    .attr("stroke", "black")
+    .attr("opacity", 0.8);
+
+  crime_circles.attr("cx", function(d) {
+      return projection(d["Location"])[0];
+    }).attr("cy", function(d) {
+      return projection(d["Location"])[1];
+    });
+
+  // circle_props = {
+  //   r: circleRadius,
+  //   fill: "white",
+  //   stroke: "black",
+  //   opacity: 0.8
+  // };
+  // var a_coords = projection(a_position);
+  // var b_coords = projection(b_position);
+
+  // $.each(data, function(index, entry) {
+  //   var crime_coords = projection(entry["Location"]);
+  //   if (crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius)) {
+  //     circle_props["cx"] = crime_coords[0];
+  //     circle_props["cy"] = crime_coords[1];
+  //     createCircle(svg, circle_props);
+  //   }
+  // });
 }
 
 
@@ -194,6 +205,12 @@ function createMap() {
   loadCrimeData(function(data) {
     //addAllCrimeDataToMap(data, svg, projection);
     addCrimeDataWithinMarkers(data, svg, projection);
+
+    $(".vis_container").on("updated_markers", function() {
+      d3.selectAll("circle").remove();
+      addCrimeDataWithinMarkers(data, svg, projection);
+      createAAndBMarkers(svg, projection);
+    });
   });
 }
 
