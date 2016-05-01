@@ -1,3 +1,7 @@
+html {
+	font-family: "Comic Sans MS", sans-serif;
+}
+
 .vis_container {
 	width: 60%;
 	float: left;
