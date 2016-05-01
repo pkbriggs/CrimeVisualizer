@@ -6,6 +6,7 @@
 
   <title>SF Crime Visualizer | CS448B</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/checkboxes.css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
   <!--[if lt IE 9]>
@@ -38,6 +39,63 @@
       <span>0:00 - 24:00</span>
       <div class="slider_range"></div>
     </div>
+
+    <!-- Nominal checkboxes -->
+    <div class="roundedOne red">
+      <input type="checkbox" value="None" id="red" name="check" checked />
+      <label for="red"></label>
+      <div>Assault</div>
+    </div>
+
+    <div class="roundedOne yellow">
+      <input type="checkbox" value="None" id="yellow" name="check" checked/>
+      <label for="yellow"></label>
+      <div>Theft</div>
+    </div>
+
+     <div class="roundedOne orange">
+      <input type="checkbox" value="None" id="orange" name="check" checked/>
+      <label for="orange"></label>
+      <div>Missing Person</div>
+    </div>
+
+
+    <div class="roundedOne green">
+      <input type="checkbox" value="None" id="green" name="check" checked/>
+      <label for="green"></label>
+      <div>Drug/Narcotic</div>
+    </div>
+
+    <div class="roundedOne teal">
+      <input type="checkbox" value="None" id="teal" name="check" checked/>
+      <label for="teal"></label>
+      <div>Non-Criminal</div>
+    </div>
+
+    <div class="roundedOne blue">
+      <input type="checkbox" value="None" id="blue" name="check" checked/>
+      <label for="blue"></label>
+      <div>Vandalism</div>
+    </div>
+
+    <div class="roundedOne purple">
+      <input type="checkbox" value="None" id="purple" name="check" checked/>
+      <label for="purple"></label>
+      <div>Suspicious Activity</div>
+    </div>
+
+     <div class="roundedOne fuscia">
+      <input type="checkbox" value="None" id="fuscia" name="check" checked/>
+      <label for="fuscia"></label>
+      <div>Warrants</div>
+    </div>
+
+    <div class="roundedOne pink">
+      <input type="checkbox" value="None" id="pink" name="check" checked/>
+      <label for="pink"></label>
+      <div>Other</div>
+    </div>
+
   </div>
 
   <script src="js/d3.min.js"></script>
@@ -45,6 +103,6 @@
   <script src="js/interaction.js"></script>
   <script src="js/sliders.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  
+
 </body>
 </html>
