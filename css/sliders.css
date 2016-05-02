@@ -1,0 +1,26 @@
+.ui-slider {
+	width: 100%;
+	margin: 5px 0px 25px 0px;
+}
+
+.ui-corner-all {
+	border-radius: 20px !important;
+}
+
+.ui-state-default:focus {
+	outline: none;
+}
+
+.ui-slider-horizontal {
+	height: 0.5em !important;
+}
+
+.ui-slider-handle {
+	width: 0.9em !important;
+  height: 0.9em !important;
+  top: -0.25em !important;
+}
+
+.ui-widget-content {
+	border: 1px solid #DEDEDE !important;
+}
