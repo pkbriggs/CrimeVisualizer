@@ -2,20 +2,35 @@
 // Declaring constants
 var width = 750,
   height = width;
-var CRIME_CIRCLE_RADIUS = 3;
 var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
+
+// customizable
+var CRIME_CIRCLE_RADIUS = 3;
+var CRIME_CIRCLE_FILL_COLOR = "white";
+var CRIME_CIRCLE_STROKE_COLOR = "black";
+var MARKER_A_FILL_COLOR = "red";
+var MARKER_A_STROKE_COLOR = "transparent";
+var MARKER_B_FILL_COLOR = "green";
+var MARKER_B_STROKE_COLOR = "transparent";
+var MARKER_A_IMAGE_FILE = "../img/marker.png";
+var MARKER_B_IMAGE_FILE = "../img/marker.svg";
+
 
 var markers = [
   { // a
     "latlong_pos": [-122.429494, 37.798033], // arbitrary initial position in [long, lat] format
     "radius": PX_IN_MILE * 1.0, // initial size is a 1 mi radius
-    "color": "red"
+    "fill_color": MARKER_A_FILL_COLOR,
+    "stroke_color": MARKER_A_STROKE_COLOR,
+    "image_file": MARKER_A_IMAGE_FILE
     // "xy_pos" // initially not set. is set from looking at the projection later
   },
   { // b
     "latlong_pos": [-122.413954, 37.780000], // arbitrary initial position in [long, lat] format
     "radius": PX_IN_MILE * 1.0, // initial size is a 1 mi radius
-    "color": "green"
+    "fill_color": MARKER_B_FILL_COLOR,
+    "stroke_color": MARKER_B_STROKE_COLOR,
+    "image_file": MARKER_B_IMAGE_FILE
     // "xy_pos" // initially not set. is set from looking at the projection later
   }
 ];
@@ -103,7 +118,10 @@ function updateAAndBMarkers(svg, projection) {
       return d["radius"];
     })
     .attr("fill", function(d, i) {
-      return d["color"];
+      return d["fill_color"];
+    })
+    .attr("stroke", function(d, i) {
+      return d["stroke_color"];
     })
     .attr("opacity", 0.25)
     // .attr("stroke", "#333")
@@ -119,7 +137,9 @@ function updateAAndBMarkers(svg, projection) {
 
   // create the marker image
   marker_images = markers_enter.append("image")
-    .attr("xlink:href", "../img/marker.svg")
+    .attr("xlink:href", function(d, i) {
+      return d["image_file"];
+    })
     .attr("x", function(d, i) {
       return d["xy_pos"][0] - 32/2;
     })
@@ -167,8 +187,8 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
   crime_circles.enter()
     .append("circle")
     .attr("r", CRIME_CIRCLE_RADIUS)
-    .attr("fill", "white")
-    .attr("stroke", "black")
+    .attr("fill", CRIME_CIRCLE_FILL_COLOR)
+    .attr("stroke", CRIME_CIRCLE_STROKE_COLOR)
     .attr("opacity", 0.8)
     .attr("cx", function(d) {
       return projection(d["Location"])[0];
