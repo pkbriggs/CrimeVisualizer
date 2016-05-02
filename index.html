@@ -48,7 +48,7 @@
 
     <div class="control_container time_slider">
       <div class="title">
-        Time of Day
+        Day and Time
       </div>
       <div class="slider_c">
         <div class="slider_reading">
@@ -58,16 +58,34 @@
         <div class="label min">12:00am</div>
         <div class="label max">11:59pm</div> 
       </div>
-    </div>
 
-    <div class="control_container">
-      <div class="title">
-        Day of Week
+      <div class="weekdays">
+        <div class="day active left">
+          Su
+        </div>
+        <div class="day active">
+          M
+        </div>
+        <div class="day active">
+          T
+        </div>
+        <div class="day active fix">
+          W
+        </div>
+        <div class="day active fix">
+          Th
+        </div>
+        <div class="day active">
+          F
+        </div>
+        <div class="day active right fix">
+          S
+        </div>
       </div>
     </div>
 
     <!-- Nominal checkboxes -->
-    <div class="control_container">
+    <div class="control_container last_control">
       <div class="title">
         Filter by Crime Type
       </div>
@@ -93,7 +111,9 @@
            <div class="roundedOne orange">
             <input type="checkbox" value="None" id="orange" name="check" checked/>
             <label for="orange"></label>
-            <div class="long">MISSING</br>PERSON</div>
+            <div class="long">
+              MISSING<br/>PERSON
+            </div>
           </div>
         </div>
 
@@ -101,7 +121,9 @@
           <div class="roundedOne purple">
             <input type="checkbox" value="None" id="purple" name="check" checked/>
             <label for="purple"></label>
-            <div class="long">DRUG/</br>NARCOTIC</div>
+            <div class="long">
+              DRUG/<br/>NARCOTIC
+            </div>
           </div>
         </div>
 
@@ -125,7 +147,9 @@
           <div class="roundedOne green">
             <input type="checkbox" value="None" id="green" name="check" checked/>
             <label for="green"></label>
-            <div class="long">SUSPICIOUS</br>ACTIVITY</div>
+            <div class="long">
+              SUSPICIOUS<br/>ACTIVITY
+            </div>
           </div>
         </div>
         
@@ -147,13 +171,14 @@
 
       </div>
     </div>
-
+    <br/>
   </div>
 
   <script src="js/d3.min.js"></script>
   <script src="js/jquery-2.2.3.min.js"></script>
   <script src="js/interaction.js"></script>
   <script src="js/sliders.js"></script>
+  <script src="js/weekdays.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 </body>
