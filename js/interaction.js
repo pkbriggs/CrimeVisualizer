@@ -5,9 +5,9 @@ var width = 750,
 var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
 
 // customizable
-var CRIME_CIRCLE_RADIUS = 3;
+var CRIME_CIRCLE_RADIUS = 2;
 var CRIME_CIRCLE_FILL_COLOR = "white";
-var CRIME_CIRCLE_STROKE_COLOR = "black";
+var CRIME_CIRCLE_STROKE_COLOR = "#333";
 var MARKER_A_FILL_COLOR = "red";
 var MARKER_A_STROKE_COLOR = "transparent";
 var MARKER_B_FILL_COLOR = "green";
@@ -55,19 +55,32 @@ function getMapProjection() {
   return projection;
 }
 
+function zoomed() {
+  container.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+
 function createMapBaseImage() {
+  var zoom = d3.behavior.zoom()
+      .scaleExtent([1, 10])
+      .on("zoom", zoomed);
+
   // Add an svg element to the DOM
   var svg = d3.select(".vis_container").append("svg")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height)
+    .call(zoom);
+
+  var container = svg.append("g");
 
   // Add svg map at correct size, assumes map is saved in a subdirectory called "data"
-  svg.append("image")
+  container.append("image")
     .attr("width", width)
     .attr("height", height)
     .attr("xlink:href", "../data/sf-map.svg");
 
-  return svg;
+  window.container = container;
+
+  return container;
 }
 
 function setMarkerRadius(marker, radius_in_miles) {
@@ -88,7 +101,7 @@ function loadCrimeData(callback) {
 function updateAAndBMarkers(svg, projection) {
   // create drag behavior so we can attach it to the markers
   var drag = d3.behavior.drag()
-    // .on('dragstart', function() { circle.style('fill', 'red'); })
+    .on('dragstart', function() { d3.event.sourceEvent.stopPropagation() })
     // .on('drag', function(d, i) { circle.attr('cx', d3.event.x)
                                   // .attr('cy', d3.event.y); })
     // .on('dragend', function() { circle.style('fill', 'black'); });
@@ -102,6 +115,8 @@ function updateAAndBMarkers(svg, projection) {
       d3.select(this).attr("cy", new_y);
 
       $(".vis_container").trigger("updated_markers");
+      // d3.event.stopPropagation();
+      // d3.event.preventDefault();
     });
 
 
