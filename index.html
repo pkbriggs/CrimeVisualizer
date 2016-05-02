@@ -6,8 +6,10 @@
 
   <title>SF Crime Visualizer | CS448B</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sliders.css">
   <link rel="stylesheet" href="css/checkboxes.css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300,900' rel='stylesheet' type='text/css'>
 
   <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -18,25 +20,31 @@
   <div class="vis_container"></div>
   <div class="vis_controls_container">
     
-    <div class="slider_a">
-      Distance from A (miles): 
-      <span>
-        5.0
-      </span>
-      <div class="slider"></div>
-    </div>
+    <div class="control_container distance_sliders">
+      <div class="title">
+        Distance Radii (Miles)
+      </div>
 
-    <div class="slider_b">
-      Distance from B (miles): 
-      <span>
-        5.0
-      </span>
-      <div class="slider"></div>
+      <div class="slider_a">
+        MARKER A 
+        <div class="slider_reading">
+          5.0
+        </div>
+        <div class="slider"></div>
+      </div>
+
+      <div class="slider_b">
+        MARKER B
+        <div class="slider_reading">
+          5.0
+        </div>
+        <div class="slider"></div>
+      </div>
     </div>
 
     <div class="slider_c">
       Time of Day: 
-      <span>0:00 - 24:00</span>
+      <span>12:00am - 11:59pm</span>
       <div class="slider_range"></div>
     </div>
 

@@ -1,5 +1,7 @@
-html {
-	font-family: "Comic Sans MS", sans-serif;
+html, body {
+	font-family: 'Source Sans Pro', sans-serif;
+	margin: 0;
+	height: 100%;
 }
 
 .vis_container {
@@ -8,19 +10,37 @@ html {
 }
 
 .vis_controls_container {
-	width: 35%;
+	position: fixed;
+	width: 270px;
+	height: 100%;
+	right: 0px;
+	overflow-y: scroll;
+	
+	padding: 50px 20px 0px 20px;
+	
+	background: #F9F9F9;
+	border-left: 1px solid #E8E8E8;
+	box-shadow: 1px 1px 3px #CACACA;
+}
+
+.control_container {
+	border: 1px solid #E8E8E8;
+	background-color: white;
+	padding: 20px 20px 0px 20px;
+}
+
+.control_container .title {
+	font-weight: 700;
+	margin-bottom: 10px;
+	padding: 0px 0px 10px 0px;
+	border-bottom: 1px solid #E8E8E8;
+}
+
+.slider_a, .slider_b, .slider_c {
+	font-size: 13px;
+}
+
+.slider_reading {
+	font-weight: 700;
 	float: right;
-}
-
-.ui-slider {
-	width: 80%;
-	margin: 10px 0px 20px 0px;
-}
-
-.ui-corner-all {
-	border-radius: 15px !important;
-}
-
-.ui-state-default:focus {
-	outline: none;
 }
