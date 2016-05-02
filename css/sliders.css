@@ -3,6 +3,10 @@
 	margin: 5px 0px 0px 0px;
 }
 
+.ui-state-default:focus {
+	outline: none;
+}
+
 .ui-corner-all {
 	border-radius: 20px !important;
 }

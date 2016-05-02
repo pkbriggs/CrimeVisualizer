@@ -8,12 +8,12 @@ var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
 var CRIME_CIRCLE_RADIUS = 2;
 var CRIME_CIRCLE_FILL_COLOR = "transparent";
 var CRIME_CIRCLE_STROKE_COLOR = "#333";
-var MARKER_A_FILL_COLOR = "red";
+var MARKER_A_FILL_COLOR = "#9A9A9A";
 var MARKER_A_STROKE_COLOR = "transparent";
-var MARKER_B_FILL_COLOR = "green";
+var MARKER_B_FILL_COLOR = "#565656";
 var MARKER_B_STROKE_COLOR = "transparent";
-var MARKER_A_IMAGE_FILE = "../img/marker.png";
-var MARKER_B_IMAGE_FILE = "../img/marker.svg";
+var MARKER_A_IMAGE_FILE = "../img/markerB.png";
+var MARKER_B_IMAGE_FILE = "../img/marker.png";
 
 var CRIME_COLORS = ["#E94345", "#FE7B23", "#FEC037", "#8CBA19", "#58ADA6", "#3E97CF", "#783F68", "#AB4189", "#EB4E85"];
 var CRIME_COLORS_MAP = {
@@ -52,7 +52,6 @@ var CRIME_COLORS_MAP = {
   "WARRANTS": CRIME_COLORS[2],
   "WEAPON LAWS": CRIME_COLORS[8]
 }
-
 
 var markers = [
   { // a
@@ -176,7 +175,7 @@ function updateAAndBMarkers(svg, projection) {
     .attr("stroke", function(d, i) {
       return d["stroke_color"];
     })
-    .attr("opacity", 0.25)
+    .attr("opacity", 0.2)
     // .attr("stroke", "#333")
     .attr("class", "map_marker");
 
@@ -245,7 +244,7 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
     .attr("stroke", function(d, i) {
       return CRIME_COLORS_MAP[d["Category"]];
     })
-    .attr("opacity", 0.8)
+    .attr("opacity", 1)
     .attr("cx", function(d) {
       return projection(d["Location"])[0];
     }).attr("cy", function(d) {

@@ -41,8 +41,26 @@ html, body {
 	margin-bottom: 15px;
 }
 
-.ui-state-default:focus {
-	outline: none;
+.marker_a {
+	position: absolute;
+	margin-top: 2px;
+	display: inline-block;
+	background-image: url(../img/markerB.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	height: 12px;
+	width: 10px;
+}
+
+.marker_b {
+	position: absolute;
+	margin-top: 2px;
+	display: inline-block;
+	background-image: url(../img/marker.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	height: 12px;
+	width: 10px;
 }
 
 .map_marker, .map_marker_image {
