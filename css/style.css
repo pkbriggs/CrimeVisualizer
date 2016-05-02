@@ -6,8 +6,13 @@ html, body {
 }
 
 .vis_container {
-	width: 60%;
-	float: left;
+	position: absolute;
+	width: -webkit-calc(100% - 300px);
+  width: expression(100% - 300px);
+  width: -moz-calc(100% - 300px);
+  width: -o-calc(100% - 300px);
+  width: calc(100% - 300px);
+  text-align: center;
 }
 
 .vis_controls_container {
