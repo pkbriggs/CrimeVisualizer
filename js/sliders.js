@@ -4,7 +4,7 @@ $(function() {
   $( ".slider" ).slider({
     range: false,
     min: 0,
-    max: 100,
+    max: 50,
     value: 10.0,
     slide: function(event, ui) {
       var new_value = ui.value / decimal_scaling;
