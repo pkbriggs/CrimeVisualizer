@@ -8,7 +8,7 @@ $(function() {
     value: 10.0,
     slide: function(event, ui) {
       var new_value = ui.value / decimal_scaling;
-      $(this).prev().text(new_value);
+      $(this).prev().text(new_value + " miles");
       if ($(this).parent().attr("class") == "slider_a")
         setMarkerRadius("a", new_value);
       else
@@ -16,7 +16,7 @@ $(function() {
       $(".vis_container").trigger("updated_markers");
     }
   });
-    $(this).prev().text($(".slider").slider("value"));
+    $(this).prev().text($(".slider").slider("value") + "miles");
 });
 
 $(function() {

@@ -28,80 +28,97 @@
       <div class="slider_a">
         MARKER A 
         <div class="slider_reading">
-          5.0
+          5.0 miles
         </div>
         <div class="slider"></div>
+        <div class="label min">0.0</div>
+        <div class="label max">10.0</div>
       </div>
 
       <div class="slider_b">
         MARKER B
         <div class="slider_reading">
-          1.0
+          1.0 miles
         </div>
         <div class="slider"></div>
+        <div class="label min">0.0</div>
+        <div class="label max">10.0</div>        
       </div>
     </div>
 
-    <div class="slider_c">
-      Time of Day: 
-      <span>12:00am - 11:59pm</span>
-      <div class="slider_range"></div>
+    <div class="control_container time_slider">
+      <div class="title">
+        Time of Day
+      </div>
+      <div class="slider_c">
+        <div class="slider_reading">
+          12:00am - 11:59pm
+        </div>
+        <div class="slider_range"></div>
+        <div class="label min">12:00am</div>
+        <div class="label max">11:59pm</div> 
+      </div>
     </div>
 
     <!-- Nominal checkboxes -->
-    <div class="roundedOne red">
-      <input type="checkbox" value="None" id="red" name="check" checked />
-      <label for="red"></label>
-      <div>Assault</div>
-    </div>
+    <div class="control_container checkboxes">
+      <div class="title">
+        Filter by Crime Type
+      </div>
+      <div class="roundedOne red">
+        <input type="checkbox" value="None" id="red" name="check" checked />
+        <label for="red"></label>
+        <div>ASSAULT</div>
+      </div>
 
-    <div class="roundedOne yellow">
-      <input type="checkbox" value="None" id="yellow" name="check" checked/>
-      <label for="yellow"></label>
-      <div>Theft</div>
-    </div>
+      <div class="roundedOne yellow">
+        <input type="checkbox" value="None" id="yellow" name="check" checked/>
+        <label for="yellow"></label>
+        <div>THEFT</div>
+      </div>
 
-     <div class="roundedOne orange">
-      <input type="checkbox" value="None" id="orange" name="check" checked/>
-      <label for="orange"></label>
-      <div>Missing Person</div>
-    </div>
+       <div class="roundedOne orange">
+        <input type="checkbox" value="None" id="orange" name="check" checked/>
+        <label for="orange"></label>
+        <div>MISSING PERSON</div>
+      </div>
 
 
-    <div class="roundedOne green">
-      <input type="checkbox" value="None" id="green" name="check" checked/>
-      <label for="green"></label>
-      <div>Drug/Narcotic</div>
-    </div>
+      <div class="roundedOne green">
+        <input type="checkbox" value="None" id="green" name="check" checked/>
+        <label for="green"></label>
+        <div>DRUG/NARCOTIC</div>
+      </div>
 
-    <div class="roundedOne teal">
-      <input type="checkbox" value="None" id="teal" name="check" checked/>
-      <label for="teal"></label>
-      <div>Non-Criminal</div>
-    </div>
+      <div class="roundedOne teal">
+        <input type="checkbox" value="None" id="teal" name="check" checked/>
+        <label for="teal"></label>
+        <div>NON-CRIMINAL</div>
+      </div>
 
-    <div class="roundedOne blue">
-      <input type="checkbox" value="None" id="blue" name="check" checked/>
-      <label for="blue"></label>
-      <div>Vandalism</div>
-    </div>
+      <div class="roundedOne blue">
+        <input type="checkbox" value="None" id="blue" name="check" checked/>
+        <label for="blue"></label>
+        <div>VANDALISM</div>
+      </div>
 
-    <div class="roundedOne purple">
-      <input type="checkbox" value="None" id="purple" name="check" checked/>
-      <label for="purple"></label>
-      <div>Suspicious Activity</div>
-    </div>
+      <div class="roundedOne purple">
+        <input type="checkbox" value="None" id="purple" name="check" checked/>
+        <label for="purple"></label>
+        <div>SUSPICIOUS ACTIVITY</div>
+      </div>
 
-     <div class="roundedOne fuscia">
-      <input type="checkbox" value="None" id="fuscia" name="check" checked/>
-      <label for="fuscia"></label>
-      <div>Warrants</div>
-    </div>
+       <div class="roundedOne fuscia">
+        <input type="checkbox" value="None" id="fuscia" name="check" checked/>
+        <label for="fuscia"></label>
+        <div>WARRANTS</div>
+      </div>
 
-    <div class="roundedOne pink">
-      <input type="checkbox" value="None" id="pink" name="check" checked/>
-      <label for="pink"></label>
-      <div>Other</div>
+      <div class="roundedOne pink">
+        <input type="checkbox" value="None" id="pink" name="check" checked/>
+        <label for="pink"></label>
+        <div>OTHER</div>
+      </div>
     </div>
 
   </div>

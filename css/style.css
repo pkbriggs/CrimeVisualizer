@@ -16,7 +16,7 @@ html, body {
 	right: 0px;
 	overflow-y: scroll;
 	
-	padding: 50px 20px 0px 20px;
+	padding: 20px 20px 0px 20px;
 	
 	background: #F9F9F9;
 	border-left: 1px solid #E8E8E8;
@@ -26,6 +26,7 @@ html, body {
 .control_container {
 	border: 1px solid #E8E8E8;
 	background-color: white;
+	margin: 0px 0px 20px 0px;
 	padding: 20px 20px 0px 20px;
 }
 
@@ -36,11 +37,46 @@ html, body {
 	border-bottom: 1px solid #E8E8E8;
 }
 
-.slider_a, .slider_b, .slider_c {
+.slider_a, .slider_b, .slider_c, .checkboxes {
 	font-size: 13px;
+	margin-bottom: 15px;
 }
 
 .slider_reading {
 	font-weight: 700;
 	float: right;
 }
+
+.slider_a .min, .slider_b .min, .slider_c .min {
+	color: #7B7B7B;
+	font-size: 11px;
+	font-weight: 300;
+	margin-top: 3px;
+	margin-left: 1px;
+}
+
+.slider_a .max, .slider_b .max, .slider_c .max {
+	color: #7B7B7B;  
+  font-size: 11px;
+  font-weight: 300;
+  margin-top: -16px;
+  float: right;
+}
+
+.slider_c .slider_reading {
+	float: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
