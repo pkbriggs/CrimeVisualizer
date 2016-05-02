@@ -17,9 +17,9 @@ html, body {
 	right: 0px;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	
+
 	padding: 15px 20px 0px 20px;
-	
+
 	background: #F9F9F9;
 	border-left: 1px solid #E8E8E8;
 	box-shadow: 1px 1px 3px #CACACA;
@@ -34,6 +34,14 @@ html, body {
 
 .last_control {
 	margin-bottom: 15px;
+}
+
+.ui-state-default:focus {
+	outline: none;
+}
+
+.map_marker, .map_marker_image {
+  cursor: all-scroll;
 }
 
 .control_container .title {
@@ -80,31 +88,19 @@ html, body {
 }
 
 .weekdays .left {
-	border-left: 1px solid #E8E8E8;	
-	border-bottom-left-radius: 20px; 
+	border-left: 1px solid #E8E8E8;
+	border-bottom-left-radius: 20px;
 	border-top-left-radius: 20px;
 	margin: 0px -1px 0px 0px;
 
 }
 
 .weekdays .right {
-	border-bottom-right-radius: 20px; 
+	border-bottom-right-radius: 20px;
 	border-top-right-radius: 20px;
 }
 
 .fix {
 	margin-left: -3px !important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
