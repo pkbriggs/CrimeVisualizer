@@ -98,9 +98,12 @@ function updateAAndBMarkers(svg, projection) {
       //   console.log(i);
       //   return "translate(" + [ d.x,d.y ] + ")"
       // });
-      var marker = d3.select(this);
-      var new_x = parseInt(marker.attr("cx")) + d3.event.dx;
-      var new_y = parseInt(marker.attr("cy")) + d3.event.dy;
+
+      // var marker = d3.select(this);
+      // var new_x = parseInt(marker.attr("cx")) + d3.event.dx;
+      // var new_y = parseInt(marker.attr("cy")) + d3.event.dy;
+      var new_x = markers[marker_num]["xy_pos"][0] + d3.event.dx;
+      var new_y = markers[marker_num]["xy_pos"][1] + d3.event.dy;
 
       markers[marker_num]["xy_pos"] = [new_x, new_y];
 
@@ -125,7 +128,7 @@ function updateAAndBMarkers(svg, projection) {
 
   // marker_parents.enter().append("g");
 
-  var markers_enter = markers_parents.enter().append("g");
+  var markers_enter = markers_parents.enter().append("g").call(drag); // have the drag call on this (the parent) element so both the circle and image get it
 
   var circles = markers_enter.append("circle")
     .attr("r", function(d, i) {
@@ -136,8 +139,7 @@ function updateAAndBMarkers(svg, projection) {
     })
     // .attr("stroke", "blue")
     .attr("opacity", 0.3)
-    .attr("class", "map_marker")
-    .call(drag);
+    .attr("class", "map_marker");
 
   circles.attr("cx", function(d, i) {
       return d["xy_pos"][0];
