@@ -105,8 +105,8 @@ function updateAAndBMarkers(svg, projection) {
     .attr("fill", function(d, i) {
       return d["color"];
     })
-    // .attr("stroke", "blue")
-    .attr("opacity", 0.3)
+    .attr("opacity", 0.25)
+    // .attr("stroke", "#333")
     .attr("class", "map_marker");
 
   circles.attr("cx", function(d, i) {
@@ -204,8 +204,8 @@ function createMap() {
       // d3.selectAll(".map_marker").remove();
       marker_images.remove();
 
-      updateAAndBMarkers(svg, projection);
       addCrimeDataWithinMarkers(data, svg, projection);
+      updateAAndBMarkers(svg, projection);
     });
   });
 }
