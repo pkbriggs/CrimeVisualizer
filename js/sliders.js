@@ -8,7 +8,7 @@ $(function() {
     value: 10.0,
     slide: function(event, ui) {
       var new_value = ui.value / decimal_scaling;
-      $(this).prev().text(new_value);
+      $(this).prev().text(new_value + " miles");
       if ($(this).parent().attr("class") == "slider_a")
         setMarkerRadius("a", new_value);
       else
@@ -16,7 +16,7 @@ $(function() {
       $(".vis_container").trigger("updated_markers");
     }
   });
-    $(this).prev().text($(".slider").slider("value"));
+    $(this).prev().text($(".slider").slider("value") + "miles");
 });
 
 $(function() {
@@ -26,9 +26,28 @@ $(function() {
     max: 24,
     values: [0, 24],
     slide: function(event, ui) {
-      $(this).prev().text(ui.values[0] + ":00 - " + ui.values[1] + ":00");
+      var start_time = transformTime(ui.values[0]);
+      var end_time = transformTime(ui.values[1]);
+      
+      $(this).prev().text(start_time + " - " + end_time);
     }
   });
   $(this).prev().text($(".slider_range").slider("values", 0) +
     ":00 - " + $(".slider_range").slider("values", 1) + ":00");
 });
+
+function transformTime(time) {
+  if (time%12 == 0) {
+    if (time == 0)
+      return "12:00am"
+    else if (time == 24)
+      return "11:59pm";
+    else 
+      return "12:00pm";
+  } else if (time/12 > 1) {
+    return time%12 + ":00pm";
+  } else {
+    return time%12 + ":00am";
+  }
+  return "error";
+}
