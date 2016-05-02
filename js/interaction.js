@@ -8,13 +8,12 @@ var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
 var CRIME_CIRCLE_RADIUS = 3;
 var CRIME_CIRCLE_FILL_COLOR = "white";
 var CRIME_CIRCLE_STROKE_COLOR = "black";
-var MARKER_A_FILL_COLOR = "red";
+var MARKER_A_FILL_COLOR = "#9A9A9A";
 var MARKER_A_STROKE_COLOR = "transparent";
-var MARKER_B_FILL_COLOR = "green";
+var MARKER_B_FILL_COLOR = "#565656";
 var MARKER_B_STROKE_COLOR = "transparent";
-var MARKER_A_IMAGE_FILE = "../img/marker.png";
-var MARKER_B_IMAGE_FILE = "../img/marker.svg";
-
+var MARKER_A_IMAGE_FILE = "../img/markerB.png";
+var MARKER_B_IMAGE_FILE = "../img/marker.png";
 
 var markers = [
   { // a
