@@ -5,15 +5,53 @@ var width = 750,
 var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
 
 // customizable
-var CRIME_CIRCLE_RADIUS = 3;
-var CRIME_CIRCLE_FILL_COLOR = "white";
-var CRIME_CIRCLE_STROKE_COLOR = "black";
+var CRIME_CIRCLE_RADIUS = 2;
+var CRIME_CIRCLE_FILL_COLOR = "transparent";
+var CRIME_CIRCLE_STROKE_COLOR = "#333";
 var MARKER_A_FILL_COLOR = "#9A9A9A";
 var MARKER_A_STROKE_COLOR = "transparent";
 var MARKER_B_FILL_COLOR = "#565656";
 var MARKER_B_STROKE_COLOR = "transparent";
 var MARKER_A_IMAGE_FILE = "../img/markerB.png";
 var MARKER_B_IMAGE_FILE = "../img/marker.png";
+
+var CRIME_COLORS = ["#E94345", "#FE7B23", "#FEC037", "#8CBA19", "#58ADA6", "#3E97CF", "#783F68", "#AB4189", "#EB4E85"];
+var CRIME_COLORS_MAP = {
+  "ASSAULT": CRIME_COLORS[0],
+  "BRIBERY": CRIME_COLORS[4],
+  "BURGLARY": CRIME_COLORS[8],
+  "DISORDERLY CONDUCT": CRIME_COLORS[3],
+  "DRIVING UNDER THE INFLUENCE": CRIME_COLORS[8],
+  "DRUG/NARCOTIC": CRIME_COLORS[6],
+  "DRUNKENNESS": CRIME_COLORS[6],
+  "EMBEZZLEMENT": CRIME_COLORS[5],
+  "EXTORTION": CRIME_COLORS[5],
+  "FAMILY OFFENSES": CRIME_COLORS[8],
+  "FORGERY/COUNTERFEITING": CRIME_COLORS[5],
+  "FRAUD": CRIME_COLORS[5],
+  "GAMBLING": CRIME_COLORS[8],
+  "KIDNAPPING": CRIME_COLORS[1],
+  "LARCENY/THEFT": CRIME_COLORS[5],
+  "LIQUOR LAWS": CRIME_COLORS[6],
+  "LOITERING": CRIME_COLORS[8],
+  "MISSING PERSON": CRIME_COLORS[1],
+  "NON-CRIMINAL": CRIME_COLORS[4],
+  "OTHER OFFENSES": CRIME_COLORS[8],
+  "PROSTITUTION": CRIME_COLORS[8],
+  "ROBBERY": CRIME_COLORS[5],
+  "RUNAWAY": CRIME_COLORS[8],
+  "SECONDARY CODES": CRIME_COLORS[8],
+  "SEX OFFENSES, FORCIBLE": CRIME_COLORS[0],
+  "SEX OFFENSES, NON FORCIBLE": CRIME_COLORS[0],
+  "STOLEN PROPERTY": CRIME_COLORS[5],
+  "SUICIDE": CRIME_COLORS[8],
+  "SUSPICIOUS OCC": CRIME_COLORS[3],
+  "TRESPASS": CRIME_COLORS[8],
+  "VANDALISM": CRIME_COLORS[7],
+  "VEHICLE THEFT": CRIME_COLORS[5],
+  "WARRANTS": CRIME_COLORS[2],
+  "WEAPON LAWS": CRIME_COLORS[8]
+}
 
 var markers = [
   { // a
@@ -54,19 +92,32 @@ function getMapProjection() {
   return projection;
 }
 
+function zoomed() {
+  container.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+
 function createMapBaseImage() {
+  var zoom = d3.behavior.zoom()
+      .scaleExtent([1, 10])
+      .on("zoom", zoomed);
+
   // Add an svg element to the DOM
   var svg = d3.select(".vis_container").append("svg")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height)
+    .call(zoom);
+
+  var container = svg.append("g");
 
   // Add svg map at correct size, assumes map is saved in a subdirectory called "data"
-  svg.append("image")
+  container.append("image")
     .attr("width", width)
     .attr("height", height)
     .attr("xlink:href", "../data/sf-map.svg");
 
-  return svg;
+  window.container = container;
+
+  return container;
 }
 
 function setMarkerRadius(marker, radius_in_miles) {
@@ -87,7 +138,7 @@ function loadCrimeData(callback) {
 function updateAAndBMarkers(svg, projection) {
   // create drag behavior so we can attach it to the markers
   var drag = d3.behavior.drag()
-    // .on('dragstart', function() { circle.style('fill', 'red'); })
+    .on('dragstart', function() { d3.event.sourceEvent.stopPropagation() })
     // .on('drag', function(d, i) { circle.attr('cx', d3.event.x)
                                   // .attr('cy', d3.event.y); })
     // .on('dragend', function() { circle.style('fill', 'black'); });
@@ -101,6 +152,8 @@ function updateAAndBMarkers(svg, projection) {
       d3.select(this).attr("cy", new_y);
 
       $(".vis_container").trigger("updated_markers");
+      // d3.event.stopPropagation();
+      // d3.event.preventDefault();
     });
 
 
@@ -122,7 +175,7 @@ function updateAAndBMarkers(svg, projection) {
     .attr("stroke", function(d, i) {
       return d["stroke_color"];
     })
-    .attr("opacity", 0.25)
+    .attr("opacity", 0.2)
     // .attr("stroke", "#333")
     .attr("class", "map_marker");
 
@@ -187,8 +240,11 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
     .append("circle")
     .attr("r", CRIME_CIRCLE_RADIUS)
     .attr("fill", CRIME_CIRCLE_FILL_COLOR)
-    .attr("stroke", CRIME_CIRCLE_STROKE_COLOR)
-    .attr("opacity", 0.8)
+    // .attr("stroke", CRIME_CIRCLE_STROKE_COLOR)
+    .attr("stroke", function(d, i) {
+      return CRIME_COLORS_MAP[d["Category"]];
+    })
+    .attr("opacity", 1)
     .attr("cx", function(d) {
       return projection(d["Location"])[0];
     }).attr("cy", function(d) {
@@ -223,8 +279,8 @@ function createMap() {
       // d3.selectAll(".map_marker").remove();
       marker_images.remove();
 
-      addCrimeDataWithinMarkers(data, svg, projection);
       updateAAndBMarkers(svg, projection);
+      addCrimeDataWithinMarkers(data, svg, projection);
     });
   });
 }
