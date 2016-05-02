@@ -21,7 +21,7 @@ var markers = [
     "latlong_pos": [-122.429494, 37.798033], // arbitrary initial position in [long, lat] format
     "radius": PX_IN_MILE * 1.0, // initial size is a 1 mi radius
     "fill_color": MARKER_A_FILL_COLOR,
-    "stroke_color": MARKER_A_FILL_COLOR,
+    "stroke_color": MARKER_A_STROKE_COLOR,
     "image_file": MARKER_A_IMAGE_FILE
     // "xy_pos" // initially not set. is set from looking at the projection later
   },
@@ -29,7 +29,7 @@ var markers = [
     "latlong_pos": [-122.413954, 37.780000], // arbitrary initial position in [long, lat] format
     "radius": PX_IN_MILE * 1.0, // initial size is a 1 mi radius
     "fill_color": MARKER_B_FILL_COLOR,
-    "stroke_color": MARKER_B_FILL_COLOR,
+    "stroke_color": MARKER_B_STROKE_COLOR,
     "image_file": MARKER_B_IMAGE_FILE
     // "xy_pos" // initially not set. is set from looking at the projection later
   }
