@@ -1,18 +1,18 @@
-var scaling_factor = 10;
+var decimal_scaling = 10; // so that we can have miles to 1 decimal point
 
 $(function() {
   $( ".slider" ).slider({
     range: false,
     min: 0,
     max: 100,
-    value: 5.0,
+    value: 10.0,
     slide: function(event, ui) {
-      var new_value = ui.value / 10;
+      var new_value = ui.value / decimal_scaling;
       $(this).prev().text(new_value);
       if ($(this).parent().attr("class") == "slider_a")
-        window.a_radius = new_value * scaling_factor;
+        setMarkerRadius("a", new_value);
       else
-        window.b_radius = new_value * scaling_factor;
+        setMarkerRadius("b", new_value);
       $(".vis_container").trigger("updated_markers");
     }
   });

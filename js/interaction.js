@@ -3,16 +3,15 @@
 var width = 750,
   height = width;
 var circleRadius = 3;
-// var AB_CIRCLE_RADIUS = 100;
-// var INITIAL_A_POSITION = [-122.429494, 37.798033];
-// var INITIAL_B_POSITION = [-122.413954, 37.780000];
+var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
 
 
 // globals
 var a_position = [-122.429494, 37.798033]; // arbitrary initial position
+// var a_position = [-122.442380, 37.765325]; // arbitrary initial position
 var b_position = [-122.413954, 37.780000]; // arbitrary initial position
-var a_radius = 60;
-var b_radius = 100;
+var a_radius = PX_IN_MILE * 1.0;
+var b_radius = PX_IN_MILE * 1.0;
 
 
 function getMapProjection() {
@@ -38,6 +37,14 @@ function createMapBaseImage() {
     .attr("xlink:href", "../data/sf-map.svg");
 
   return svg;
+}
+
+function setMarkerRadius(marker, radius_in_miles) {
+  // given a radius in miles from the user, update the radius of the marker (in pixels)
+  if (marker == "a")
+    a_radius = radius_in_miles * PX_IN_MILE;
+  else
+    b_radius = radius_in_miles * PX_IN_MILE;
 }
 
 function createCircle(svg, props) {
@@ -115,10 +122,6 @@ function addAllCrimeDataToMap(data, svg, projection) {
   //   circle_props["cy"] = coords[1];
   //   createCircle(svg, circle_props);
   // });
-}
-
-function updateMarkerARadius(radius) {
-
 }
 
 function crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius) {
@@ -207,87 +210,3 @@ function createMap() {
 $(document).ready(function() {
   createMap();
 });
-
-
-
-
-
-
-////////// UTILITY FUNCTIONS
-// this intersection code source: http://stackoverflow.com/questions/12219802/a-javascript-function-that-returns-the-x-y-points-of-intersection-between-two-ci/12221389#12221389
-function intersection(x0, y0, r0, x1, y1, r1) {
-  var a, dx, dy, d, h, rx, ry;
-  var x2, y2;
-
-  /* dx and dy are the vertical and horizontal distances between
-   * the circle centers.
-   */
-  dx = x1 - x0;
-  dy = y1 - y0;
-
-  /* Determine the straight-line distance between the centers. */
-  d = Math.sqrt((dy*dy) + (dx*dx));
-
-  /* Check for solvability. */
-  if (d > (r0 + r1)) {
-      /* no solution. circles do not intersect. */
-      return false;
-  }
-  if (d < Math.abs(r0 - r1)) {
-      /* no solution. one circle is contained in the other */
-      return false;
-  }
-
-  /* 'point 2' is the point where the line through the circle
-   * intersection points crosses the line between the circle
-   * centers.
-   */
-
-  /* Determine the distance from point 0 to point 2. */
-  a = ((r0*r0) - (r1*r1) + (d*d)) / (2.0 * d) ;
-
-  /* Determine the coordinates of point 2. */
-  x2 = x0 + (dx * a/d);
-  y2 = y0 + (dy * a/d);
-
-  /* Determine the distance from point 2 to either of the
-   * intersection points.
-   */
-  h = Math.sqrt((r0*r0) - (a*a));
-
-  /* Now determine the offsets of the intersection points from
-   * point 2.
-   */
-  rx = -dy * (h/d);
-  ry = dx * (h/d);
-
-  /* Determine the absolute intersection points. */
-  var xi = x2 + rx;
-  var xi_prime = x2 - rx;
-  var yi = y2 + ry;
-  var yi_prime = y2 - ry;
-
-  return [xi, xi_prime, yi, yi_prime];
-}
-
-
-// --- Playing with circles ---
-// var circle = svg.append("circle").attr({
-//     cx: originX,
-//     cy: originY,
-//     r: circleRadius,
-//     fill: "white",
-//     stroke: "black"
-// });
-
-// function updateRadius(nRadius) {
-//   d3.select("#radiusSlider").property("value", nRadius);
-
-//   // update the circle radius
-//   svg.selectAll("circle")
-//     .attr("r", nRadius);
-// }
-
-// d3.select("#radiusSlider").on("input", function() {
-//   updateRadius(+this.value);
-// });
