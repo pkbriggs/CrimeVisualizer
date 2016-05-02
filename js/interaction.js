@@ -2,20 +2,29 @@
 // Declaring constants
 var width = 750,
   height = width;
-var CRIME_CIRCLE_RADIUS = 3;
 var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
+
+// customizable
+var CRIME_CIRCLE_RADIUS = 3;
+var MARKER_A_COLOR = "red";
+var MARKER_B_COLOR = "green";
+var MARKER_A_IMAGE_FILE = "../img/marker.png";
+var MARKER_B_IMAGE_FILE = "../img/marker.svg";
+
 
 var markers = [
   { // a
     "latlong_pos": [-122.429494, 37.798033], // arbitrary initial position in [long, lat] format
     "radius": PX_IN_MILE * 1.0, // initial size is a 1 mi radius
-    "color": "red"
+    "color": MARKER_A_COLOR,
+    "image_file": MARKER_A_IMAGE_FILE
     // "xy_pos" // initially not set. is set from looking at the projection later
   },
   { // b
     "latlong_pos": [-122.413954, 37.780000], // arbitrary initial position in [long, lat] format
     "radius": PX_IN_MILE * 1.0, // initial size is a 1 mi radius
-    "color": "green"
+    "color": MARKER_B_COLOR,
+    "image_file": MARKER_B_IMAGE_FILE
     // "xy_pos" // initially not set. is set from looking at the projection later
   }
 ];
@@ -119,7 +128,9 @@ function updateAAndBMarkers(svg, projection) {
 
   // create the marker image
   marker_images = markers_enter.append("image")
-    .attr("xlink:href", "../img/marker.svg")
+    .attr("xlink:href", function(d, i) {
+      return d["image_file"];
+    })
     .attr("x", function(d, i) {
       return d["xy_pos"][0] - 32/2;
     })
