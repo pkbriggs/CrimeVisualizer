@@ -28,6 +28,9 @@ var markers = [
   }
 ];
 
+var data_within_intersection = [];
+var marker_images = [];
+
 
 
 function getMapProjection() {
@@ -95,7 +98,6 @@ function updateAAndBMarkers(svg, projection) {
       //   console.log(i);
       //   return "translate(" + [ d.x,d.y ] + ")"
       // });
-
       var marker = d3.select(this);
       var new_x = parseInt(marker.attr("cx")) + d3.event.dx;
       var new_y = parseInt(marker.attr("cy")) + d3.event.dy;
@@ -117,11 +119,15 @@ function updateAAndBMarkers(svg, projection) {
 
 
   // console.log("about to make markers");
-  var markers_objs = svg.selectAll(".map_marker")
+  var markers_parents = svg.selectAll(".map_marker")
   // var markers_objs = svg.select(".map_marker")
-    .data(markers)
-    .enter()
-    .append("circle")
+    .data(markers);
+
+  // marker_parents.enter().append("g");
+
+  var markers_enter = markers_parents.enter().append("g");
+
+  var circles = markers_enter.append("circle")
     .attr("r", function(d, i) {
       return d["radius"];
     })
@@ -130,14 +136,44 @@ function updateAAndBMarkers(svg, projection) {
     })
     // .attr("stroke", "blue")
     .attr("opacity", 0.3)
-    .attr("cx", function(d, i) {
+    .attr("class", "map_marker")
+    .call(drag);
+
+  circles.attr("cx", function(d, i) {
       return d["xy_pos"][0];
     })
     .attr("cy", function(d, i) {
       return d["xy_pos"][1];
-    })
-    .call(drag);
+    });
 
+
+  markers_parents.exit().remove();
+
+  // console.log("markers_objs = ");
+  // console.log(markers_objs);
+
+  marker_images = markers_enter.append("image")
+    // .attr("r", 50)
+    .attr("xlink:href", "../img/marker.svg")
+    // .attr("class", "marker_image")
+    .attr("x", function(d, i) {
+      return d["xy_pos"][0] - 32/2;
+    })
+    .attr("y", function(d, i) {
+      return d["xy_pos"][1] - 32/2;
+    })
+    // .attr("fill", "black")
+    .attr("height", 32)
+    .attr("width", 32)
+    .attr("class", "map_marker");
+
+
+  // svg.selectAll(".map_marker")
+  //   .append("circle")
+  //   .attr("r", 20)
+  //   .attr("cx", 0)
+  //   .attr("cy", 0)
+  //   .attr("fill", "black");
 
 
 
@@ -233,14 +269,22 @@ function crimeWithinMarkers(crime_coords) {
 
 function addCrimeDataWithinMarkers(data, svg, projection) {
 
-  var filtered_data = data.filter(function(entry) {
-    var crime_coords = projection(entry["Location"]);
-    return crimeWithinMarkers(crime_coords);
-  });
+  // var filtered_data = data.filter(function(entry) {
+  //   var crime_coords = projection(entry["Location"]);
+  //   return crimeWithinMarkers(crime_coords);
+  // });
+  // console.log("length of filtered data: " + filtered_data.length);
 
-  var crime_circles = svg.selectAll("circle")
-    .data(filtered_data)
-    .enter()
+
+  var crime_circles = svg.selectAll(".crime_circle")
+    .data(window.data_within_intersection, function(d, i) {
+      return d["IncidentNumber"];
+    });
+
+  // var crime_circles = svg.selectAll(".crime_circle")
+  //   .data(filtered_data);
+
+  crime_circles.enter()
     .append("circle")
     .attr("r", CRIME_CIRCLE_RADIUS)
     .attr("fill", "white")
@@ -251,6 +295,8 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
     }).attr("cy", function(d) {
       return projection(d["Location"])[1];
     });
+
+  crime_circles.exit().remove();
 
   // crime_circles.attr("cx", function(d) {
   //     return projection(d["Location"])[0];
@@ -285,12 +331,25 @@ function createMap() {
 
   loadCrimeData(function(data) {
     //addAllCrimeDataToMap(data, svg, projection);
+    data_within_intersection = data.filter(function(entry) {
+      var crime_coords = projection(entry["Location"]);
+      return crimeWithinMarkers(crime_coords);
+    });
+
     addCrimeDataWithinMarkers(data, svg, projection);
 
     $(".vis_container").on("updated_markers", function() {
+      window.data_within_intersection = data.filter(function(entry) {
+        var crime_coords = projection(entry["Location"]);
+        return crimeWithinMarkers(crime_coords);
+      });
+      console.log("new len of data: " + data_within_intersection.length);
       d3.selectAll("circle").remove();
-      addCrimeDataWithinMarkers(data, svg, projection);
+      // d3.selectAll(".map_marker").remove();
+      marker_images.remove();
+
       updateAAndBMarkers(svg, projection);
+      addCrimeDataWithinMarkers(data, svg, projection);
     });
   });
 }

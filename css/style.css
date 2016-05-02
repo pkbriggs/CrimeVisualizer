@@ -24,3 +24,15 @@ html {
 .ui-state-default:focus {
 	outline: none;
 }
+
+.marker_image {
+  background-image: url("../img/marker.png");
+}
+
+.map_marker {
+  cursor: all-scroll;
+}
+
+.map_marker_image {
+  pointer-events: none; /* ignore pointer events so that the image does not impact the drag events */
+}
