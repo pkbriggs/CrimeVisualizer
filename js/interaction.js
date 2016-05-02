@@ -2,16 +2,28 @@
 // Declaring constants
 var width = 750,
   height = width;
-var circleRadius = 3;
+var CRIME_CIRCLE_RADIUS = 3;
 var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
 
 
 // globals
-var a_position = [-122.429494, 37.798033]; // arbitrary initial position
-// var a_position = [-122.442380, 37.765325]; // arbitrary initial position
-var b_position = [-122.413954, 37.780000]; // arbitrary initial position
-var a_radius = PX_IN_MILE * 1.0;
-var b_radius = PX_IN_MILE * 1.0;
+// var markers["a"]["position"] = [-122.429494, 37.798033]; // arbitrary initial position
+// var markers["a"]["position"] = [-122.442380, 37.765325]; // arbitrary initial position
+// var markers["b"]["position"] = [-122.413954, 37.780000]; // arbitrary initial position
+// var markers["a"]["radius"] = PX_IN_MILE * 1.0;
+// var markers["b"]["radius"] = PX_IN_MILE * 1.0;
+
+var markers = {
+  "a": {
+    "position": [-122.429494, 37.798033], // arbitrary initial position in [long, lat] format
+    "radius": PX_IN_MILE * 1.0 // initial size is a 1 mi radius
+  },
+  "b": {
+    "position": [-122.413954, 37.780000], // arbitrary initial position in [long, lat] format
+    "radius": PX_IN_MILE * 1.0 // initial size is a 1 mi radius
+  }
+}
+
 
 
 function getMapProjection() {
@@ -42,9 +54,9 @@ function createMapBaseImage() {
 function setMarkerRadius(marker, radius_in_miles) {
   // given a radius in miles from the user, update the radius of the marker (in pixels)
   if (marker == "a")
-    a_radius = radius_in_miles * PX_IN_MILE;
+    markers["a"]["radius"] = radius_in_miles * PX_IN_MILE;
   else
-    b_radius = radius_in_miles * PX_IN_MILE;
+    markers["b"]["radius"] = radius_in_miles * PX_IN_MILE;
 }
 
 function createCircle(svg, props) {
@@ -59,12 +71,22 @@ function loadCrimeData(callback) {
   });
 }
 
-function createAAndBMarkers(svg, projection) {
-  var a_coords = projection(a_position);
-  var b_coords = projection(b_position);
+function updateAAndBMarkers(svg, projection) {
+  // var drag = d3.behavior.drag()
+  //   // .on('dragstart', function() { circle.style('fill', 'red'); })
+  //   // .on('drag', function(d, i) { circle.attr('cx', d3.event.x)
+  //                                 // .attr('cy', d3.event.y); })
+  //   .on("drag", function(d, i) {
+  //     d["position"]
+  //   });
+    // .on('dragend', function() { circle.style('fill', 'black'); });
+
+
+  var a_coords = projection(markers["a"]["position"]);
+  var b_coords = projection(markers["b"]["position"]);
 
   var circle_a_props = {
-    r: a_radius,
+    r: markers["a"]["radius"],
     cx: a_coords[0],
     cy: a_coords[1],
     fill: "red",
@@ -73,7 +95,7 @@ function createAAndBMarkers(svg, projection) {
   createCircle(svg, circle_a_props);
 
   var circle_b_props = {
-    r: b_radius,
+    r: markers["b"]["radius"],
     cx: b_coords[0],
     cy: b_coords[1],
     fill: "green",
@@ -99,7 +121,7 @@ function addAllCrimeDataToMap(data, svg, projection) {
   //   .data(data)
   //   .enter()
   //   .append("circle")
-  //   .attr("r", circleRadius)
+  //   .attr("r", CRIME_CIRCLE_RADIUS)
   //   .attr("fill", "white")
   //   .attr("stroke", "black");
 
@@ -111,7 +133,7 @@ function addAllCrimeDataToMap(data, svg, projection) {
 
 
   // circle_props = {
-  //   r: circleRadius,
+  //   r: CRIME_CIRCLE_RADIUS,
   //   fill: "white",
   //   "stroke": "black"
   // };
@@ -124,20 +146,21 @@ function addAllCrimeDataToMap(data, svg, projection) {
   // });
 }
 
-function crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius) {
+function crimeWithinMarkers(crime_coords, a_coords, b_coords) {
+
   // see if it is within marker A's radius
   var a_x_difference = Math.pow(crime_coords[0] - a_coords[0], 2); // (x2 - x1)^2
   var a_y_difference = Math.pow(crime_coords[1] - a_coords[1], 2); // (x2 - x1)^2
   var distance_from_a = Math.sqrt(a_x_difference + a_y_difference);
 
-  if (distance_from_a > a_radius) // if the distance is larger than A's radius, it does not fall within A, so it is too far
+  if (distance_from_a > markers["a"]["radius"]) // if the distance is larger than A's radius, it does not fall within A, so it is too far
     return false;
 
   var b_x_difference = Math.pow(crime_coords[0] - b_coords[0], 2); // (x2 - x1)^2
   var b_y_difference = Math.pow(crime_coords[1] - b_coords[1], 2); // (x2 - x1)^2
   var distance_from_b = Math.sqrt(b_x_difference + b_y_difference);
 
-  if (distance_from_b > b_radius) // if the distance is larger than B's radius, it does not fall within B, so it is too far
+  if (distance_from_b > markers["b"]["radius"]) // if the distance is larger than B's radius, it does not fall within B, so it is too far
     return false;
 
   // it is within the radius for both A and B, so it must fall in our intersection area!
@@ -146,19 +169,19 @@ function crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius
 
 
 function addCrimeDataWithinMarkers(data, svg, projection) {
-  var a_coords = projection(a_position);
-  var b_coords = projection(b_position);
+  var a_coords = projection(markers["a"]["position"]);
+  var b_coords = projection(markers["b"]["position"]);
 
   var filtered_data = data.filter(function(entry) {
     var crime_coords = projection(entry["Location"]);
-    return crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius);
+    return crimeWithinMarkers(crime_coords, a_coords, b_coords);
   });
 
   var crime_circles = svg.selectAll("circle")
     .data(filtered_data)
     .enter()
     .append("circle")
-    .attr("r", circleRadius)
+    .attr("r", CRIME_CIRCLE_RADIUS)
     .attr("fill", "white")
     .attr("stroke", "black")
     .attr("opacity", 0.8);
@@ -170,17 +193,17 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
     });
 
   // circle_props = {
-  //   r: circleRadius,
+  //   r: CRIME_CIRCLE_RADIUS,
   //   fill: "white",
   //   stroke: "black",
   //   opacity: 0.8
   // };
-  // var a_coords = projection(a_position);
-  // var b_coords = projection(b_position);
+  // var a_coords = projection(markers["a"]["position"]);
+  // var b_coords = projection(markers["b"]["position"]);
 
   // $.each(data, function(index, entry) {
   //   var crime_coords = projection(entry["Location"]);
-  //   if (crimeWithinMarkers(crime_coords, a_coords, b_coords, a_radius, b_radius)) {
+  //   if (crimeWithinMarkers(crime_coords, a_coords, b_coords)) {
   //     circle_props["cx"] = crime_coords[0];
   //     circle_props["cy"] = crime_coords[1];
   //     createCircle(svg, circle_props);
@@ -192,7 +215,7 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
 function createMap() {
   var projection = getMapProjection();
   var svg = createMapBaseImage();
-  createAAndBMarkers(svg, projection);
+  updateAAndBMarkers(svg, projection);
 
   loadCrimeData(function(data) {
     //addAllCrimeDataToMap(data, svg, projection);
@@ -201,7 +224,7 @@ function createMap() {
     $(".vis_container").on("updated_markers", function() {
       d3.selectAll("circle").remove();
       addCrimeDataWithinMarkers(data, svg, projection);
-      createAAndBMarkers(svg, projection);
+      updateAAndBMarkers(svg, projection);
     });
   });
 }
