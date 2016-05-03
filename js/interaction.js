@@ -100,6 +100,16 @@ var active_crime_categories = {
   "OTHER": true
 }
 
+var active_crime_days = {
+  "Su": true,
+  "M": true,
+  "T": true,
+  "W": true,
+  "Th": true,
+  "F": true,
+  "S": true
+}
+
 
 
 function getMapProjection() {
@@ -149,6 +159,31 @@ function createMapBaseImage() {
 function updateCrimeCategoryVisible(category, visible) {
   active_crime_categories[category] = visible;
   $(".vis_container").trigger("updated_markers");
+}
+
+function updateDayOfWeekVisible(day_str, visible) {
+  active_crime_days[day_str] = visible;
+  $(".vis_container").trigger("updated_markers");
+}
+
+function isCrimeDayOfWeekActive(day) {
+  var day_str = "";
+  if (day == 0)
+    day_str = "M";
+  else if (day == 1)
+    day_str = "T";
+  else if (day == 2)
+    day_str = "W";
+  else if (day == 3)
+    day_str = "Th";
+  else if (day == 4)
+    day_str = "F";
+  else if (day == 5)
+    day_str = "S";
+  else if (day == 6)
+    day_str = "Su";
+
+  return active_crime_days[day_str];
 }
 
 function isCrimeTypeActive(type) {
@@ -274,6 +309,10 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
 
   crime_circles.enter()
     .append("circle")
+    .attr("class", "crime_circle")
+    .attr("id", function(d, i) {
+      return "crime-" + d["IncidentNumber"];
+    })
     .attr("r", CRIME_CIRCLE_RADIUS)
     .attr("fill", CRIME_CIRCLE_FILL_COLOR)
     // .attr("stroke", CRIME_CIRCLE_STROKE_COLOR)
@@ -300,11 +339,14 @@ function updateVisibleCrimes(all_data, projection) {
     }
 
     // make sure it is within the correct time of day
-    // var crime_time = entry["Date"];
+    // var crime_time = entry["Time"];
     // TODO
 
     // make sure it is on one of the correct days of the week
-    // TODO
+    var crime_date = entry["Date"];
+    var crime_day_of_week = new Date(crime_date).getDay();
+    if (!isCrimeDayOfWeekActive(crime_day_of_week))
+      return false;
 
     // make sure it is within the radius of the two markers
     var crime_coords = projection(entry["Location"]);
