@@ -5,7 +5,7 @@
 .checkboxes .item {
 	display: inline-block;
 	width: 49%;
-	height: 34px;
+	height: 40px;
 }
 
 input[type="checkbox"] {
@@ -125,7 +125,7 @@ input[type="checkbox"] {
 }
 
 .pink label:after {
-	background: #EB4E85;
+	background: #FB91B6;
 }
 
 .roundedOne div {
