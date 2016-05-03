@@ -413,11 +413,16 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
       return projection(d["Location"])[0];
     }).attr("cy", function(d) {
       return projection(d["Location"])[1];
-    }).on("mouseover", function(d) {
-      // console.log("mouseover on crime with incident number: " + d["IncidentNumber"]);
-    }).on("mouseout", function(d) {
-      // console.log("mouseout on crime with incident number: " + d["IncidentNumber"]);
     });
+
+  crime_circles.each(function(d, i) {
+    $(this).hoverIntent(
+      function(e) { // callback called on hover start (if mouse stays on this element for ~100ms)
+        showTooltip(e.originalEvent, d);
+    }, function() { // callback for hover end
+        $(".tooltip").toggleClass("active");
+    })
+  });
 
   crime_circles.exit().remove();
 }
@@ -450,11 +455,22 @@ function updateVisibleCrimes(all_data, projection) {
   });
 }
 
-function populateTooltip($target, $tooltip) {
+function populateTooltip($target, $tooltip, crime_data) {
+  // data we can use to populate the tooltip
+  var crime_category = crime_data["Category"];
+  var crime_date = crime_data["Date"];
+  var crime_time = crime_data["Time"];
+  var crime_day_of_week = crime_data["DayOfWeek"];
+  var crime_description = crime_data["Description"];
+  var crime_incident_number = crime_data["IncidentNumber"];
+  var crime_resolution = crime_data["Resolution"];
+  var crime_location_latlong = crime_data["Location"];
+  //
+
   var crime_id = $target.attr("id");
-  console.log(crime_id);
+  // console.log("id = " + crime_id);
   var $description = $($tooltip.children()[0]);
-  $description.text("info info info");
+  $description.text(crime_description);
   var width = $description.outerWidth();
   $tooltip.css("width", width);
 }
@@ -467,10 +483,10 @@ function positionTooltip($tooltip, position) {
   $tooltip.toggleClass("active");
 }
 
-function showTooltip(event) {
+function showTooltip(event, crime_data) {
   var $target = $(event.target);
   var $tooltip = $(".tooltip");
-  populateTooltip($target, $tooltip);
+  populateTooltip($target, $tooltip, crime_data);
 
   var position = $target.position();
   var radius = d3.select("#" + $target.attr("id")).node().getBoundingClientRect().width;
@@ -480,18 +496,19 @@ function showTooltip(event) {
   positionTooltip($tooltip, position);
 }
 
-function crimeCircleTooltips() {
-  var $crimeCircles = $(".crime_circle");
-  console.log($crimeCircles);
-  $crimeCircles.mouseover(function(event) {
-    //setTimeout(showTooltip, 1000, event);
-  });
+// function crimeCircleTooltips() {
+//   var $crimeCircles = $(".crime_circle");
+//   // console.log($crimeCircles);
+//   $crimeCircles.mouseover(function(event) {
+//     showTooltip(event);
+//     //setTimeout(showTooltip, 1000, event);
+//   });
 
-  $crimeCircles.mouseout(function(event) {
-    var $tooltip = $(".tooltip");
-    $tooltip.toggleClass("active");
-  });
-}
+//   $crimeCircles.mouseout(function(event) {
+//     var $tooltip = $(".tooltip");
+//     $tooltip.toggleClass("active");
+//   });
+// }
 
 
 function createMap() {
@@ -503,7 +520,7 @@ function createMap() {
     updateVisibleCrimes(data, projection);
 
     addCrimeDataWithinMarkers(data, svg, projection);
-    crimeCircleTooltips();
+    // crimeCircleTooltips();
 
     $(".vis_container").on("updated_markers", function() {
       updateVisibleCrimes(data, projection);
@@ -513,7 +530,7 @@ function createMap() {
 
       updateAAndBMarkers(svg, projection);
       addCrimeDataWithinMarkers(data, svg, projection);
-      crimeCircleTooltips();
+      // crimeCircleTooltips();
     });
   });
 }
