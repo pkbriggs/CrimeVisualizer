@@ -6,6 +6,8 @@ var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
 
 // customizable
 var CRIME_CIRCLE_RADIUS = 2;
+var CRIME_CIRCLE_RADIUS_SMALLER = 1;
+var CRIME_CIRCLE_RADIUS_SMALLEST = 0.5;
 var CRIME_CIRCLE_FILL_COLOR = "transparent";
 var CRIME_CIRCLE_STROKE_COLOR = "#333";
 var MARKER_A_FILL_COLOR = "#9A9A9A";
@@ -110,6 +112,7 @@ var active_crime_days = {
   "S": true
 };
 var active_crime_start_end_time = [0, 24];
+var current_crime_circle_radius = CRIME_CIRCLE_RADIUS;
 
 
 
@@ -130,6 +133,22 @@ function getMapProjection() {
 
 function zoomed() {
   container.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  if (d3.event.scale > 4.5) {
+    if (current_crime_circle_radius != CRIME_CIRCLE_RADIUS_SMALLEST) {
+      current_crime_circle_radius = CRIME_CIRCLE_RADIUS_SMALLEST;
+      $(".vis_container").trigger("updated_markers");
+    }
+  } else if (d3.event.scale > 2.2) {
+    if (current_crime_circle_radius != CRIME_CIRCLE_RADIUS_SMALLER) {
+      current_crime_circle_radius = CRIME_CIRCLE_RADIUS_SMALLER;
+      $(".vis_container").trigger("updated_markers");
+    }
+  } else {
+    if (current_crime_circle_radius != CRIME_CIRCLE_RADIUS) {
+      current_crime_circle_radius = CRIME_CIRCLE_RADIUS;
+      $(".vis_container").trigger("updated_markers");
+    }
+  }
 }
 
 function createMapBaseImage() {
@@ -327,7 +346,7 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
     .attr("id", function(d, i) {
       return "crime-" + d["IncidentNumber"];
     })
-    .attr("r", CRIME_CIRCLE_RADIUS)
+    .attr("r", current_crime_circle_radius)
     .attr("fill", CRIME_CIRCLE_FILL_COLOR)
     // .attr("stroke", CRIME_CIRCLE_STROKE_COLOR)
     .attr("stroke", function(d, i) {
@@ -339,6 +358,8 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
       return projection(d["Location"])[0];
     }).attr("cy", function(d) {
       return projection(d["Location"])[1];
+    }).on("click", function(d) {
+      console.log("clicked on crime with incident number: " + d["IncidentNumber"]);
     });
 
   crime_circles.exit().remove();
