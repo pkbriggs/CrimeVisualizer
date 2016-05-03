@@ -285,6 +285,10 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
 
   crime_circles.enter()
     .append("circle")
+    .attr("class", "crime_circle")
+    .attr("id", function(d, i) {
+      return "crime-" + d["IncidentNumber"];
+    })
     .attr("r", CRIME_CIRCLE_RADIUS)
     .attr("fill", CRIME_CIRCLE_FILL_COLOR)
     // .attr("stroke", CRIME_CIRCLE_STROKE_COLOR)
