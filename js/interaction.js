@@ -151,6 +151,17 @@ function updateCrimeCategoryVisible(category, visible) {
   $(".vis_container").trigger("updated_markers");
 }
 
+function updateDayOfWeekVisible(day, visible) {
+  // 0 = Monday
+  // 1 = Tuesday
+  // 2 = Wednesday
+  // 3 = Thursday
+  // 4 = Friday
+  // 5 = Saturday
+  // 6 = Sunday
+  console.log("updating visibility for '" + day + "' to " + visible);
+}
+
 function isCrimeTypeActive(type) {
   var crime_category = CRIME_CATEGORY_MAP[type];
   return active_crime_categories[crime_category];
@@ -300,11 +311,12 @@ function updateVisibleCrimes(all_data, projection) {
     }
 
     // make sure it is within the correct time of day
-    // var crime_time = entry["Date"];
+    // var crime_time = entry["Time"];
     // TODO
 
     // make sure it is on one of the correct days of the week
-    // TODO
+    // var crime_date = entry["Date"];
+    // new Date(crime_date).getDay();
 
     // make sure it is within the radius of the two markers
     var crime_coords = projection(entry["Location"]);
