@@ -131,3 +131,62 @@ html, body {
 	margin-left: -3px !important;
 }
 
+.tooltip {
+	position: relative;
+	opacity: 0;
+}
+
+.arrow_up {
+	width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid #D0D0D0;
+	-webkit-transition: opacity .2s ease-out;
+  -moz-transition: opacity .2s ease-out;
+  -o-transition: opacity .2s ease-out;
+  -ms-transition: opacity .2s ease-out;
+  transition: opacity .2s ease-out;
+}
+
+.auto_margin {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.arrow_fill {
+	position: relative;
+	z-index: 3;
+	width: 0; 
+	height: 0; 
+	margin-top: -9px;
+	border-left: 9px solid transparent;
+	border-right: 9px solid transparent;
+	border-bottom: 9px solid white;
+	-webkit-transition: opacity 1s ease-out;
+  -moz-transition: opacity 1s ease-out;
+  -o-transition: opacity 1s ease-out;
+  -ms-transition: opacity 1s ease-out;
+  transition: opacity 1s ease-out;
+}
+
+.hidden_description {
+	position: absolute;
+	top: 9px;
+	left: 0;
+	border: 1px solid #D0D0D0;
+	border-radius: 10px;
+	text-align: left;
+	font-size: 0.7em;
+	padding: 15px 20px;
+	background: rgba(255, 255, 255, 0.9);
+	-webkit-transition: opacity .2s ease-out;
+  -moz-transition: opacity .2s ease-out;
+  -o-transition: opacity .2s ease-out;
+  -ms-transition: opacity .2s ease-out;
+  transition: opacity .2s ease-out;
+}
+
+.tooltip.active {
+	opacity: 1;
+}

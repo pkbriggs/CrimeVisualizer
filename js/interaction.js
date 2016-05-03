@@ -395,6 +395,47 @@ function updateVisibleCrimes(all_data, projection) {
   });
 }
 
+function populateTooltip($tooltip) {
+  var $description = $($tooltip.children()[0]);
+  $description.text("info info info");
+  var width = $description.outerWidth();
+  $tooltip.css("width", width);
+}
+
+function positionTooltip($tooltip, position) {
+  var leftOffset = $tooltip.outerWidth()/2;
+  var left = position.left - leftOffset;
+  $tooltip.css("top", position.top);
+  $tooltip.css("left", left);
+  $tooltip.toggleClass("active");
+}
+
+function showTooltip(event) {
+  var $target = $(event.target);
+  var $tooltip = $(".tooltip");
+  populateTooltip($tooltip);
+
+  var position = $target.position();
+  var radius = d3.select("#" + $target.attr("id")).node().getBoundingClientRect().width;
+  position.top = position.top + radius;
+  position.left = position.left + (radius/2);
+  
+  positionTooltip($tooltip, position);
+}
+
+function crimeCircleTooltips() {
+  var $crimeCircles = $(".crime_circle");
+  console.log($crimeCircles);
+  $crimeCircles.mouseover(function(event) {
+    //setTimeout(showTooltip, 1000, event);
+  }); 
+
+  $crimeCircles.mouseout(function(event) {
+    var $tooltip = $(".tooltip");
+    $tooltip.toggleClass("active");
+  });
+}
+
 
 function createMap() {
   var projection = getMapProjection();
@@ -405,6 +446,7 @@ function createMap() {
     updateVisibleCrimes(data, projection);
 
     addCrimeDataWithinMarkers(data, svg, projection);
+    crimeCircleTooltips();
 
     $(".vis_container").on("updated_markers", function() {
       updateVisibleCrimes(data, projection);
@@ -414,6 +456,7 @@ function createMap() {
 
       updateAAndBMarkers(svg, projection);
       addCrimeDataWithinMarkers(data, svg, projection);
+      crimeCircleTooltips();
     });
   });
 }
