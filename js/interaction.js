@@ -358,8 +358,10 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
       return projection(d["Location"])[0];
     }).attr("cy", function(d) {
       return projection(d["Location"])[1];
-    }).on("click", function(d) {
-      console.log("clicked on crime with incident number: " + d["IncidentNumber"]);
+    }).on("mouseover", function(d) {
+      // console.log("mouseover on crime with incident number: " + d["IncidentNumber"]);
+    }).on("mouseout", function(d) {
+      // console.log("mouseout on crime with incident number: " + d["IncidentNumber"]);
     });
 
   crime_circles.exit().remove();
