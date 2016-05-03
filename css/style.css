@@ -5,6 +5,17 @@ html, body {
 	color: #333;
 }
 
+h1 {
+	position: absolute;
+	z-index: 1;
+	left: 50px;
+	top: 9px;
+}
+
+h1 span {
+	font-weight: 400;
+}
+
 .vis_container {
 	position: absolute;
 	width: -webkit-calc(100% - 300px);
@@ -17,6 +28,7 @@ html, body {
 
 .vis_controls_container {
 	position: fixed;
+	top: 0px;
 	width: 270px;
 	height: 100%;
 	right: 0px;
@@ -189,4 +201,40 @@ html, body {
 
 .tooltip.active {
 	opacity: 1;
+}
+
+.buttons {
+	position: absolute;
+	top: 85px;
+	left: 50px;
+}
+
+.buttons .control_container {
+	padding: 10px 20px;
+	background: rgba(255, 255, 255, 0.8);
+}
+
+.button {
+	display: inline-block;
+	width: 27px;
+	height: 27px;
+	border: 1px solid #E8E8E8;
+	border-radius: 3px;
+	background-color: #F9F9F9;
+	font-size: 17px;
+	font-weight: 700;
+	box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.1), 0px 1px 0px rgba(255,255,255,1);
+	transition: background 0.5s ease;
+}
+
+.button:focus {
+	outline: none;
+}
+
+.button:hover {
+	background-color: #E8E8E8;
+}
+
+.button.in {
+	margin-right: 6px;
 }

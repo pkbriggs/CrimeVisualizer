@@ -1,6 +1,6 @@
 
 // Declaring constants
-var width = 750,
+var width = $(window).width() - 300,
   height = width;
 var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
 
