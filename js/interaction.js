@@ -100,6 +100,16 @@ var active_crime_categories = {
   "OTHER": true
 }
 
+var active_crime_days = {
+  "Su": true,
+  "M": true,
+  "T": true,
+  "W": true,
+  "Th": true,
+  "F": true,
+  "S": true
+}
+
 
 
 function getMapProjection() {
@@ -151,15 +161,29 @@ function updateCrimeCategoryVisible(category, visible) {
   $(".vis_container").trigger("updated_markers");
 }
 
-function updateDayOfWeekVisible(day, visible) {
-  // 0 = Monday
-  // 1 = Tuesday
-  // 2 = Wednesday
-  // 3 = Thursday
-  // 4 = Friday
-  // 5 = Saturday
-  // 6 = Sunday
-  console.log("updating visibility for '" + day + "' to " + visible);
+function updateDayOfWeekVisible(day_str, visible) {
+  active_crime_days[day_str] = visible;
+  $(".vis_container").trigger("updated_markers");
+}
+
+function isCrimeDayOfWeekActive(day) {
+  var day_str = "";
+  if (day == 0)
+    day_str = "M";
+  else if (day == 1)
+    day_str = "T";
+  else if (day == 2)
+    day_str = "W";
+  else if (day == 3)
+    day_str = "Th";
+  else if (day == 4)
+    day_str = "F";
+  else if (day == 5)
+    day_str = "S";
+  else if (day == 6)
+    day_str = "Su";
+
+  return active_crime_days[day_str];
 }
 
 function isCrimeTypeActive(type) {
@@ -319,8 +343,10 @@ function updateVisibleCrimes(all_data, projection) {
     // TODO
 
     // make sure it is on one of the correct days of the week
-    // var crime_date = entry["Date"];
-    // new Date(crime_date).getDay();
+    var crime_date = entry["Date"];
+    var crime_day_of_week = new Date(crime_date).getDay();
+    if (!isCrimeDayOfWeekActive(crime_day_of_week))
+      return false;
 
     // make sure it is within the radius of the two markers
     var crime_coords = projection(entry["Location"]);

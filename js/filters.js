@@ -3,8 +3,10 @@ $(function() {
 	$weekdays.click(function(event) {
 		var $target = $(event.target);
 		$target.toggleClass("active");
+
+		var day_of_week = $target.text().trim();
 		var active = $target.hasClass("active");
-		updateDayOfWeekVisible($target.text(), active);
+		updateDayOfWeekVisible(day_of_week, active);
 	});
 });
 
