@@ -9,11 +9,19 @@ h1 {
 	position: absolute;
 	z-index: 1;
 	left: 50px;
-	top: 9px;
+	top: -5px;
 }
 
 h1 span {
 	font-weight: 400;
+}
+
+.bold {
+	font-weight: 700;
+}
+
+.crime_circle.active {
+	stroke: rgba(255, 255, 255, 0.8);
 }
 
 .vis_container {
@@ -206,10 +214,10 @@ h1 span {
 	top: 9px;
 	left: 0;
 	border: 1px solid #D0D0D0;
-	border-radius: 10px;
+	border-radius: 6px;
 	text-align: left;
-	font-size: 0.7em;
-	padding: 15px 20px;
+	font-size: 13px;
+	padding: 0;
 	background: rgba(255, 255, 255, 0.9);
 	-webkit-transition: opacity .2s ease-out;
   -moz-transition: opacity .2s ease-out;
@@ -218,13 +226,27 @@ h1 span {
   transition: opacity .2s ease-out;
 }
 
+.hidden_description .category {
+	text-align: center;
+	padding: 10px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	color: white;
+}
+
+.hidden_description .info {
+	padding: 10px 15px 12px 15px;
+}
+
 .tooltip.active {
 	opacity: 1;
 }
 
 .buttons {
 	position: absolute;
-	top: 85px;
+	top: 73px;
 	left: 50px;
 }
 
