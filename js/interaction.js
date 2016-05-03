@@ -219,7 +219,7 @@ function createMapBaseImage() {
   container.append("image")
     .attr("width", width)
     .attr("height", height)
-    .attr("xlink:href", "./data/sf-map.svg");
+    .attr("xlink:href", "data/sf-map.svg");
 
   window.container = container;
 
