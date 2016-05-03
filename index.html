@@ -17,9 +17,17 @@
 </head>
 
 <body>
+  <h1> San Francisco Crime Incidents: <span>April 1-15, 2016<span> </h1>
   <div class="vis_container">
-    <button id="zoom_in">+</button>
-    <button id="zoom_out">-</button>
+    <div class="buttons">
+      <div class="control_container distance_sliders">
+        <div class="title">
+          Zoom In/Out
+        </div>
+        <button id="zoom_in" class="button in">+</button>
+        <button id="zoom_out" class="button out">-</button>
+      </div>
+    </div>
     <!-- SVG map added here by JS -->
   </div>
 
@@ -33,6 +41,14 @@
 
   <div class="vis_controls_container">
 
+    <div class="control_container first">
+      <div class="title special">
+        Matching Crimes
+      </div>
+      <div class="title special float">
+        #
+      </div>
+    </div>
     <div class="control_container distance_sliders">
       <div class="title">
         Distance Radii (Miles)

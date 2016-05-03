@@ -1,6 +1,6 @@
 
 // Declaring constants
-var width = 750,
+var width = $(window).width() - 300,
   height = width;
 var PX_IN_MILE = 72.02; // thus, a radius of 144 would be 2.0mi
 
@@ -468,7 +468,6 @@ function populateTooltip($target, $tooltip, crime_data) {
   //
 
   var crime_id = $target.attr("id");
-  // console.log("id = " + crime_id);
   var $description = $($tooltip.children()[0]);
   $description.text(crime_description);
   var width = $description.outerWidth();
