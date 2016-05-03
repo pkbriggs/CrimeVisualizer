@@ -416,13 +416,16 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
     });
 
   crime_circles.each(function(d, i) {
-    $(this).hoverIntent(
-      function(e) { // callback called on hover start (if mouse stays on this element for ~100ms)
-        showTooltip(e.originalEvent, d);
-    }, function(e) { // callback for hover end
-        $(".tooltip").toggleClass("active");
-        $(e.target).toggleClass("active");
-    })
+    $(this).hoverIntent({
+      over: function(e) { // callback called on hover start (if mouse stays on this element for ~100ms)
+            showTooltip(e.originalEvent, d);
+        },
+      out: function(e) { // callback for hover end
+            $(".tooltip").toggleClass("active");
+            $(e.target).toggleClass("active");
+        },
+      interval: 200
+      })
   });
 
   crime_circles.exit().remove();
@@ -466,7 +469,7 @@ function updateVisibleCrimes(all_data, projection) {
 function populateTooltip($target, $tooltip, crime_data) {
   // data we can use to populate the tooltip
   var crime_category = crime_data["Category"];
-  var crime_date = crime_data["Date"];
+  var crime_date = new Date(crime_data["Date"]);
   var crime_time = crime_data["Time"];
   var crime_day_of_week = crime_data["DayOfWeek"];
   var crime_description = crime_data["Description"];
@@ -476,6 +479,8 @@ function populateTooltip($target, $tooltip, crime_data) {
   var mapped_category = CRIME_CATEGORY_MAP[crime_category];
   var crime_color = CRIME_COLORS_MAP[mapped_category];
   //
+  var formatted_crime_date = crime_date.toLocaleDateString();
+  var formatted_crime_time = timeConvert(crime_time);
 
   var crime_id = $target.attr("id");
   var $category = $(".hidden_description .category")
@@ -486,7 +491,7 @@ function populateTooltip($target, $tooltip, crime_data) {
 
   $description.html(
     "<span class='bold'>Category:</span> " + crime_category.toLowerCase() + "<br/>" +
-    "<span class='bold'>Date/Time:</span> " + crime_day_of_week + ", " + crime_date + ", " + crime_time + "<br/>" +
+    "<span class='bold'>Date/Time:</span> " + formatted_crime_date + ", " + formatted_crime_time + "<br/>" +
     "<span class='bold'>Description:</span> " + crime_description.toLowerCase() + "<br/>" +
     "<span class='bold'>Resolution:</span> " + crime_resolution.toLowerCase()
   );
@@ -569,17 +574,29 @@ $(document).ready(function() {
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
 // source: https://davidwalsh.name/javascript-debounce-function
-function debounce(func, wait, immediate) {
-  var timeout;
-  return function() {
-    var context = this, args = arguments;
-    var later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-};
+// function debounce(func, wait, immediate) {
+//   var timeout;
+//   return function() {
+//     var context = this, args = arguments;
+//     var later = function() {
+//       timeout = null;
+//       if (!immediate) func.apply(context, args);
+//     };
+//     var callNow = immediate && !timeout;
+//     clearTimeout(timeout);
+//     timeout = setTimeout(later, wait);
+//     if (callNow) func.apply(context, args);
+//   };
+// };
+
+function timeConvert(time) {
+  // Check correct time format and split into components
+  time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+  if (time.length > 1) { // If time format correct
+    time = time.slice (1);  // Remove full string match value
+    time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+    time[0] = +time[0] % 12 || 12; // Adjust hours
+  }
+  return time.join (''); // return adjusted time or original string
+}
