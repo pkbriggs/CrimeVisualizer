@@ -468,7 +468,6 @@ function populateTooltip($target, $tooltip, crime_data) {
   //
 
   var crime_id = $target.attr("id");
-  // console.log("id = " + crime_id);
   var $description = $($tooltip.children()[0]);
   $description.text(crime_description);
   var width = $description.outerWidth();

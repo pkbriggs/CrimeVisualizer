@@ -46,11 +46,11 @@ h1 span {
 	border: 1px solid #E8E8E8;
 	background-color: white;
 	margin: 0px 0px 13px 0px;
-	padding: 20px 20px 0px 20px;
+	padding: 15px 20px 0px 20px;
 }
 
 .last_control {
-	margin-bottom: 15px;
+	margin-bottom: 12px;
 }
 
 .marker_a {
@@ -79,15 +79,33 @@ h1 span {
   cursor: all-scroll;
 }
 
+.control_container.first {
+	padding: 10px 20px;
+}
+
 .control_container .title {
 	font-weight: 700;
 	margin-bottom: 10px;
-	padding: 0px 0px 10px 0px;
+	padding: 0 0 10px 0;
 	border-bottom: 1px solid #E8E8E8;
 }
 
+.control_container .title.special {
+	display: inline-block;
+	border-bottom: none;
+	padding: 0;
+	margin: 0;
+}
+
+.control_container .title.special.float {
+	float: right;
+	border-bottom: none;
+	padding: 0;
+	margin: 0;
+}
+
 .last_control .title {
-	margin-bottom: 0px;
+	margin-bottom: 0;
 }
 
 .slider_a, .slider_b, .slider_c, .checkboxes {
@@ -97,7 +115,7 @@ h1 span {
 
 .weekdays {
 	font-size: 13px;
-	margin-bottom: 20px;
+	margin-bottom: 17px;
 }
 
 .weekdays .day {
