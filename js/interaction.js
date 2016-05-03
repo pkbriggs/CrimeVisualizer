@@ -492,9 +492,6 @@ function populateTooltip($target, $tooltip, crime_data) {
   );
 
   $description.css("text-transform","capitalize");
-
-  var width = $description.outerWidth();
-  $tooltip.css("width", width);
 }
 
 function positionTooltip($tooltip, position) {
