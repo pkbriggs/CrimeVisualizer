@@ -18,17 +18,16 @@ var MARKER_A_IMAGE_FILE = "../img/markerB.png";
 var MARKER_B_IMAGE_FILE = "../img/marker.png";
 
 
-var CRIME_COLORS = ["#E94345", "#FE7B23", "#FEC037", "#8CBA19", "#58ADA6", "#3E97CF", "#783F68", "#AB4189", "#EB4E85"];
+var CRIME_COLORS = ["#E94345", "#FE7B23", "#FEC037", "#8CBA19", "#58ADA6", "#3E97CF", "#783F68", "#FB91B6"];
 var CRIME_COLORS_MAP = {
   "ASSAULT": CRIME_COLORS[0],
-  "MISSING PERSON": CRIME_COLORS[1],
+  "NON-CRIMINAL": CRIME_COLORS[1],
   "WARRANTS": CRIME_COLORS[2],
   "SUSPICIOUS ACTIVITY": CRIME_COLORS[3],
-  "NON-CRIMINAL": CRIME_COLORS[4],
   "THEFT": CRIME_COLORS[5],
-  "DRUG/NARCOTIC": CRIME_COLORS[6],
-  "VANDALISM": CRIME_COLORS[7],
-  "OTHER": CRIME_COLORS[8]
+  "DRUG/NARCOTIC": CRIME_COLORS[4],
+  "VANDALISM": CRIME_COLORS[6],
+  "OTHER": CRIME_COLORS[7]
 }
 
 var CRIME_CATEGORY_MAP = {
@@ -46,16 +45,16 @@ var CRIME_CATEGORY_MAP = {
   "FORGERY/COUNTERFEITING": "THEFT",
   "FRAUD": "THEFT",
   "GAMBLING": "OTHER",
-  "KIDNAPPING": "MISSING PERSON",
+  "KIDNAPPING": "OTHER",
   "LARCENY/THEFT": "THEFT",
   "LIQUOR LAWS": "DRUG/NARCOTIC",
   "LOITERING": "NON-CRIMINAL",
-  "MISSING PERSON": "MISSING PERSON",
+  "MISSING PERSON": "OTHER",
   "NON-CRIMINAL": "NON-CRIMINAL",
   "OTHER OFFENSES": "OTHER",
   "PROSTITUTION": "OTHER",
   "ROBBERY": "THEFT",
-  "RUNAWAY": "MISSING PERSON",
+  "RUNAWAY": "OTHER",
   "SECONDARY CODES": "OTHER",
   "SEX OFFENSES, FORCIBLE": "ASSAULT",
   "SEX OFFENSES, NON FORCIBLE": "ASSAULT",
@@ -92,7 +91,6 @@ var visible_crime_data = [];
 var marker_images = [];
 var active_crime_categories = {
   "ASSAULT": true,
-  "MISSING PERSON": true,
   "WARRANTS": true,
   "SUSPICIOUS ACTIVITY": true,
   "NON-CRIMINAL": true,
@@ -501,6 +499,7 @@ function populateTooltip($target, $tooltip, crime_data) {
 
 function positionTooltip($tooltip, position) {
   var leftOffset = $tooltip.outerWidth()/2;
+  console.log(leftOffset);  //137.5
   var left = position.left - leftOffset;
   $tooltip.css("top", position.top);
   $tooltip.css("left", left);
