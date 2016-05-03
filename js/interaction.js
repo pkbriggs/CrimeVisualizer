@@ -466,11 +466,26 @@ function populateTooltip($target, $tooltip, crime_data) {
   var crime_incident_number = crime_data["IncidentNumber"];
   var crime_resolution = crime_data["Resolution"];
   var crime_location_latlong = crime_data["Location"];
+  var mapped_category = CRIME_CATEGORY_MAP[crime_category];
+  var crime_color = CRIME_COLORS_MAP[mapped_category];
   //
 
   var crime_id = $target.attr("id");
-  var $description = $($tooltip.children()[0]);
-  $description.text(crime_description);
+  var $category = $(".hidden_description .category")
+  $category.text(mapped_category);
+  $category.css("background", crime_color);
+
+  var $description = $(".hidden_description .info");
+
+  $description.html(
+    "<span class='bold'>Category:</span> " + crime_category.toLowerCase() + "<br/>" +
+    "<span class='bold'>Date/Time:</span> " + crime_day_of_week + ", " + crime_date + ", " + crime_time + "<br/>" +
+    "<span class='bold'>Description:</span> " + crime_description.toLowerCase() + "<br/>" +
+    "<span class='bold'>Resolution:</span> " + crime_resolution.toLowerCase()
+  );
+
+  $description.css("text-transform","capitalize");
+
   var width = $description.outerWidth();
   $tooltip.css("width", width);
 }
