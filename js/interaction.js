@@ -419,8 +419,9 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
     $(this).hoverIntent(
       function(e) { // callback called on hover start (if mouse stays on this element for ~100ms)
         showTooltip(e.originalEvent, d);
-    }, function() { // callback for hover end
+    }, function(e) { // callback for hover end
         $(".tooltip").toggleClass("active");
+        $(e.target).toggleClass("active");
     })
   });
 
@@ -493,6 +494,7 @@ function showTooltip(event, crime_data) {
   position.left = position.left + (radius/2);
 
   positionTooltip($tooltip, position);
+  $target.toggleClass("active");
 }
 
 // function crimeCircleTooltips() {

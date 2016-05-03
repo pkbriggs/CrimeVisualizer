@@ -16,6 +16,10 @@ h1 span {
 	font-weight: 400;
 }
 
+.crime_circle.active {
+	stroke: rgba(255, 255, 255, 0.8);
+}
+
 .vis_container {
 	position: absolute;
 	width: -webkit-calc(100% - 300px);
