@@ -156,15 +156,16 @@ function zoomed() {
   }
 }
 
+
 // source: http://bl.ocks.org/linssen/7352810
-function interpolateZoom(translate, scale) {
+function interpolateZoom (translate, scale) {
   return d3.transition().duration(350).tween("zoom", function () {
     var translate_interpolation = d3.interpolate(zoom.translate(), translate),
       scale_interpolation = d3.interpolate(zoom.scale(), scale);
     return function (t) {
       zoom
-        .scale(translate_interpolation(t))
-        .translate(scale_interpolation(t));
+        .scale(scale_interpolation(t))
+        .translate(translate_interpolation(t));
       zoomed();
     };
   });
@@ -475,7 +476,7 @@ function showTooltip(event) {
   var radius = d3.select("#" + $target.attr("id")).node().getBoundingClientRect().width;
   position.top = position.top + radius;
   position.left = position.left + (radius/2);
-  
+
   positionTooltip($tooltip, position);
 }
 
@@ -484,7 +485,7 @@ function crimeCircleTooltips() {
   console.log($crimeCircles);
   $crimeCircles.mouseover(function(event) {
     //setTimeout(showTooltip, 1000, event);
-  }); 
+  });
 
   $crimeCircles.mouseout(function(event) {
     var $tooltip = $(".tooltip");
