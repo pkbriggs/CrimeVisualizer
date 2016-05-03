@@ -449,7 +449,9 @@ function updateVisibleCrimes(all_data, projection) {
   });
 }
 
-function populateTooltip($tooltip) {
+function populateTooltip($target, $tooltip) {
+  var crime_id = $target.attr("id");
+  console.log(crime_id);
   var $description = $($tooltip.children()[0]);
   $description.text("info info info");
   var width = $description.outerWidth();
@@ -467,7 +469,7 @@ function positionTooltip($tooltip, position) {
 function showTooltip(event) {
   var $target = $(event.target);
   var $tooltip = $(".tooltip");
-  populateTooltip($tooltip);
+  populateTooltip($target, $tooltip);
 
   var position = $target.position();
   var radius = d3.select("#" + $target.attr("id")).node().getBoundingClientRect().width;
