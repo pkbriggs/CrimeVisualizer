@@ -18,7 +18,11 @@
 
 <body>
   <div class="vis_container">
+    <button id="zoom_in">+</button>
+    <button id="zoom_out">-</button>
+    <!-- SVG map added here by JS -->
   </div>
+
   <div class="tooltip">
     <div class="hidden_description">
       <span></span>
@@ -26,15 +30,16 @@
     <div class="arrow_up auto_margin"></div>
     <div class="arrow_fill auto_margin"></div>
   </div>
+  
   <div class="vis_controls_container">
-    
+
     <div class="control_container distance_sliders">
       <div class="title">
         Distance Radii (Miles)
       </div>
 
       <div class="slider_a">
-        <div class="marker_a"></div> &nbsp;&nbsp;&nbsp;&nbsp; Marker A 
+        <div class="marker_a"></div> &nbsp;&nbsp;&nbsp;&nbsp; Marker A
         <div class="slider_reading">
           1.0 miles
         </div>
@@ -50,7 +55,7 @@
         </div>
         <div class="slider"></div>
         <div class="label min">0.0</div>
-        <div class="label max">5.0</div>        
+        <div class="label max">5.0</div>
       </div>
     </div>
 
@@ -64,7 +69,7 @@
         </div>
         <div class="slider_range"></div>
         <div class="label min">12:00am</div>
-        <div class="label max">11:59pm</div> 
+        <div class="label max">11:59pm</div>
       </div>
 
       <div class="weekdays">
@@ -98,7 +103,7 @@
         Filter by Crime Type
       </div>
       <div class="checkboxes">
-        
+
         <div class="item">
           <div class="roundedOne red">
             <input type="checkbox" value="None" id="red" name="check" checked />
@@ -150,7 +155,7 @@
             <div>Vandalism</div>
           </div>
         </div>
-        
+
         <div class="item">
           <div class="roundedOne green">
             <input type="checkbox" value="None" id="green" name="check" checked/>
@@ -160,7 +165,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="item">
            <div class="roundedOne pink">
             <input type="checkbox" value="None" id="pink" name="check" checked/>
@@ -168,7 +173,7 @@
             <div>Other</div>
           </div>
         </div>
-        
+
         <div class="item">
           <div class="roundedOne teal">
             <input type="checkbox" value="None" id="teal" name="check" checked/>
