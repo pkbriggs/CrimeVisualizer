@@ -12,10 +12,12 @@ $(function() {
 		var $target = $(event.target);
 		if ($target.hasClass("inactive")) {
 			$target.removeClass("inactive");
-			console.log("gotta re-find this shit: ", $target.next().text().toLowerCase());
+			var crime_category = $target.next().text().trim();
+			updateCrimeCategoryVisible(crime_category, true); // make it so this category is visible on the map
 		} else {
 			$target.toggleClass("inactive");
-			console.log("gotta remove this shit: ", $target.next().text().toLowerCase());
+			var crime_category = $target.next().text().trim();
+			updateCrimeCategoryVisible(crime_category, false); // make it so this category is no longer visible on the map
 		}
 	});
 });

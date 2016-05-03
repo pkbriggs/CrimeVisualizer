@@ -15,42 +15,56 @@ var MARKER_B_STROKE_COLOR = "transparent";
 var MARKER_A_IMAGE_FILE = "../img/markerB.png";
 var MARKER_B_IMAGE_FILE = "../img/marker.png";
 
+
 var CRIME_COLORS = ["#E94345", "#FE7B23", "#FEC037", "#8CBA19", "#58ADA6", "#3E97CF", "#783F68", "#AB4189", "#EB4E85"];
 var CRIME_COLORS_MAP = {
   "ASSAULT": CRIME_COLORS[0],
-  "BRIBERY": CRIME_COLORS[4],
-  "BURGLARY": CRIME_COLORS[8],
-  "DISORDERLY CONDUCT": CRIME_COLORS[3],
-  "DRIVING UNDER THE INFLUENCE": CRIME_COLORS[8],
-  "DRUG/NARCOTIC": CRIME_COLORS[6],
-  "DRUNKENNESS": CRIME_COLORS[6],
-  "EMBEZZLEMENT": CRIME_COLORS[5],
-  "EXTORTION": CRIME_COLORS[5],
-  "FAMILY OFFENSES": CRIME_COLORS[8],
-  "FORGERY/COUNTERFEITING": CRIME_COLORS[5],
-  "FRAUD": CRIME_COLORS[5],
-  "GAMBLING": CRIME_COLORS[8],
-  "KIDNAPPING": CRIME_COLORS[1],
-  "LARCENY/THEFT": CRIME_COLORS[5],
-  "LIQUOR LAWS": CRIME_COLORS[6],
-  "LOITERING": CRIME_COLORS[8],
   "MISSING PERSON": CRIME_COLORS[1],
-  "NON-CRIMINAL": CRIME_COLORS[4],
-  "OTHER OFFENSES": CRIME_COLORS[8],
-  "PROSTITUTION": CRIME_COLORS[8],
-  "ROBBERY": CRIME_COLORS[5],
-  "RUNAWAY": CRIME_COLORS[8],
-  "SECONDARY CODES": CRIME_COLORS[8],
-  "SEX OFFENSES, FORCIBLE": CRIME_COLORS[0],
-  "SEX OFFENSES, NON FORCIBLE": CRIME_COLORS[0],
-  "STOLEN PROPERTY": CRIME_COLORS[5],
-  "SUICIDE": CRIME_COLORS[8],
-  "SUSPICIOUS OCC": CRIME_COLORS[3],
-  "TRESPASS": CRIME_COLORS[8],
-  "VANDALISM": CRIME_COLORS[7],
-  "VEHICLE THEFT": CRIME_COLORS[5],
   "WARRANTS": CRIME_COLORS[2],
-  "WEAPON LAWS": CRIME_COLORS[8]
+  "SUSPICIOUS ACTIVITY": CRIME_COLORS[3],
+  "NON-CRIMINAL": CRIME_COLORS[4],
+  "THEFT": CRIME_COLORS[5],
+  "DRUG/NARCOTIC": CRIME_COLORS[6],
+  "VANDALISM": CRIME_COLORS[7],
+  "OTHER": CRIME_COLORS[8]
+}
+
+var CRIME_CATEGORY_MAP = {
+  "ARSON": "OTHER",
+  "ASSAULT": "ASSAULT",
+  "BRIBERY": "NON-CRIMINAL",
+  "BURGLARY": "OTHER",
+  "DISORDERLY CONDUCT": "SUSPICIOUS ACTIVITY",
+  "DRIVING UNDER THE INFLUENCE": "OTHER",
+  "DRUG/NARCOTIC": "DRUG/NARCOTIC",
+  "DRUNKENNESS": "DRUG/NARCOTIC",
+  "EMBEZZLEMENT": "THEFT",
+  "EXTORTION": "THEFT",
+  "FAMILY OFFENSES": "OTHER",
+  "FORGERY/COUNTERFEITING": "THEFT",
+  "FRAUD": "THEFT",
+  "GAMBLING": "OTHER",
+  "KIDNAPPING": "MISSING PERSON",
+  "LARCENY/THEFT": "THEFT",
+  "LIQUOR LAWS": "DRUG/NARCOTIC",
+  "LOITERING": "NON-CRIMINAL",
+  "MISSING PERSON": "MISSING PERSON",
+  "NON-CRIMINAL": "NON-CRIMINAL",
+  "OTHER OFFENSES": "OTHER",
+  "PROSTITUTION": "OTHER",
+  "ROBBERY": "THEFT",
+  "RUNAWAY": "MISSING PERSON",
+  "SECONDARY CODES": "OTHER",
+  "SEX OFFENSES, FORCIBLE": "ASSAULT",
+  "SEX OFFENSES, NON FORCIBLE": "ASSAULT",
+  "STOLEN PROPERTY": "THEFT",
+  "SUICIDE": "OTHER",
+  "SUSPICIOUS OCC": "SUSPICIOUS ACTIVITY",
+  "TRESPASS": "OTHER",
+  "VANDALISM": "VANDALISM",
+  "VEHICLE THEFT": "THEFT",
+  "WARRANTS": "WARRANTS",
+  "WEAPON LAWS": "OTHER"
 }
 
 var markers = [
@@ -72,8 +86,19 @@ var markers = [
   }
 ];
 
-var data_within_intersection = [];
+var visible_crime_data = [];
 var marker_images = [];
+var active_crime_categories = {
+  "ASSAULT": true,
+  "MISSING PERSON": true,
+  "WARRANTS": true,
+  "SUSPICIOUS ACTIVITY": true,
+  "NON-CRIMINAL": true,
+  "THEFT": true,
+  "DRUG/NARCOTIC": true,
+  "VANDALISM": true,
+  "OTHER": true
+}
 
 
 
@@ -118,6 +143,17 @@ function createMapBaseImage() {
   window.container = container;
 
   return container;
+}
+
+// type is one of the types at the top of the file, visible is a boolean
+function updateCrimeCategoryVisible(category, visible) {
+  active_crime_categories[category] = visible;
+  $(".vis_container").trigger("updated_markers");
+}
+
+function isCrimeTypeActive(type) {
+  var crime_category = CRIME_CATEGORY_MAP[type];
+  return active_crime_categories[crime_category];
 }
 
 function setMarkerRadius(marker, radius_in_miles) {
@@ -232,7 +268,7 @@ function crimeWithinMarkers(crime_coords) {
 
 function addCrimeDataWithinMarkers(data, svg, projection) {
   var crime_circles = svg.selectAll(".crime_circle")
-    .data(window.data_within_intersection, function(d, i) {
+    .data(visible_crime_data, function(d, i) {
       return d["IncidentNumber"];
     });
 
@@ -242,7 +278,8 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
     .attr("fill", CRIME_CIRCLE_FILL_COLOR)
     // .attr("stroke", CRIME_CIRCLE_STROKE_COLOR)
     .attr("stroke", function(d, i) {
-      return CRIME_COLORS_MAP[d["Category"]];
+      var crime_category = CRIME_CATEGORY_MAP[d["Category"]];
+      return CRIME_COLORS_MAP[crime_category];
     })
     .attr("opacity", 1)
     .attr("cx", function(d) {
@@ -254,6 +291,30 @@ function addCrimeDataWithinMarkers(data, svg, projection) {
   crime_circles.exit().remove();
 }
 
+function updateVisibleCrimes(all_data, projection) {
+  visible_crime_data = all_data.filter(function(entry) {
+    // make sure it is one of the visible types of crimes
+    var crime_type = entry["Category"];
+    if (!isCrimeTypeActive(crime_type)) {
+      return false;
+    }
+
+    // make sure it is within the correct time of day
+    // var crime_time = entry["Date"];
+    // TODO
+
+    // make sure it is on one of the correct days of the week
+    // TODO
+
+    // make sure it is within the radius of the two markers
+    var crime_coords = projection(entry["Location"]);
+    if (!crimeWithinMarkers(crime_coords))
+      return false;
+
+    return true;
+  });
+}
+
 
 function createMap() {
   var projection = getMapProjection();
@@ -261,20 +322,12 @@ function createMap() {
   updateAAndBMarkers(svg, projection);
 
   loadCrimeData(function(data) {
-    //addAllCrimeDataToMap(data, svg, projection);
-    data_within_intersection = data.filter(function(entry) {
-      var crime_coords = projection(entry["Location"]);
-      return crimeWithinMarkers(crime_coords);
-    });
+    updateVisibleCrimes(data, projection);
 
     addCrimeDataWithinMarkers(data, svg, projection);
 
     $(".vis_container").on("updated_markers", function() {
-      window.data_within_intersection = data.filter(function(entry) {
-        var crime_coords = projection(entry["Location"]);
-        return crimeWithinMarkers(crime_coords);
-      });
-      console.log("new len of data: " + data_within_intersection.length);
+      updateVisibleCrimes(data, projection);
       d3.selectAll("circle").remove();
       // d3.selectAll(".map_marker").remove();
       marker_images.remove();
