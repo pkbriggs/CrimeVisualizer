@@ -98,7 +98,7 @@ var active_crime_categories = {
   "DRUG/NARCOTIC": true,
   "VANDALISM": true,
   "OTHER": true
-}
+};
 
 var active_crime_days = {
   "Su": true,
@@ -108,7 +108,8 @@ var active_crime_days = {
   "Th": true,
   "F": true,
   "S": true
-}
+};
+var active_crime_start_end_time = [0, 24];
 
 
 
@@ -161,6 +162,11 @@ function updateCrimeCategoryVisible(category, visible) {
   $(".vis_container").trigger("updated_markers");
 }
 
+function updateStartEndTimeVisible(start_time, end_time) {
+  active_crime_start_end_time = [start_time, end_time];
+  $(".vis_container").trigger("updated_markers");
+}
+
 function updateDayOfWeekVisible(day_str, visible) {
   active_crime_days[day_str] = visible;
   $(".vis_container").trigger("updated_markers");
@@ -184,6 +190,14 @@ function isCrimeDayOfWeekActive(day) {
     day_str = "Su";
 
   return active_crime_days[day_str];
+}
+
+function isCrimeTimeActive(time) {
+  // input format: HH:MM
+  var time_hour = parseInt(time.substring(0, 2));
+  if (time_hour >= active_crime_start_end_time[0] && time_hour <= active_crime_start_end_time[1])
+    return true;
+  return false;
 }
 
 function isCrimeTypeActive(type) {
@@ -339,8 +353,9 @@ function updateVisibleCrimes(all_data, projection) {
     }
 
     // make sure it is within the correct time of day
-    // var crime_time = entry["Time"];
-    // TODO
+    var crime_time = entry["Time"];
+    if (!isCrimeTimeActive(crime_time))
+      return false;
 
     // make sure it is on one of the correct days of the week
     var crime_date = entry["Date"];

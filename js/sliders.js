@@ -28,8 +28,8 @@ $(function() {
     slide: function(event, ui) {
       var start_time = transformTime(ui.values[0]);
       var end_time = transformTime(ui.values[1]);
-      
       $(this).prev().text(start_time + " - " + end_time);
+      updateStartEndTimeVisible(ui.values[0], ui.values[1]);
     }
   });
   $(this).prev().text($(".slider_range").slider("values", 0) +
@@ -42,7 +42,7 @@ function transformTime(time) {
       return "12:00am"
     else if (time == 24)
       return "11:59pm";
-    else 
+    else
       return "12:00pm";
   } else if (time/12 > 1) {
     return time%12 + ":00pm";
