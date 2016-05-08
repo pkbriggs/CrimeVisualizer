@@ -1,5 +1,5 @@
 # Crime Visualizer
-A visualization project for Stanford CS448B (Data Visualization).
+This is a visualization project for Stanford CS448B (Data Visualization).
 
 You can find the hosted version here: [https://crimevisualizer.herokuapp.com](https://crimevisualizer.herokuapp.com). The demo is best viewed on Chrome or Safari, and you may have to wait a few seconds for the server to start up.
 
